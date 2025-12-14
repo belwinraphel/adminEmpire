@@ -1,10 +1,17 @@
+import 'package:empire/core/extension/responsive.dart';
 import 'package:empire/core/utilis/app_theme.dart';
+ 
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
+import 'package:empire/feature/homepage/presentation/view/homewebui.dart';
 import 'package:empire/feature/homepage/presentation/view/widget.dart';
-
+ 
+import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
+import 'package:empire/feature/homepage/presentation/view/widgets/quick_actions_section.dart';
+import 'package:empire/feature/homepage/presentation/view/widgets/revenue_chart_card.dart';
 import 'package:empire/feature/revenue/presentation/bloc/revenue_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,29 +28,62 @@ class _HomePageState extends State<HomePage> {
     context.read<MetricsBloc>().add(const MetricsDataRequested());
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 1200;
     final isTablet = screenWidth > 768 && screenWidth <= 1200;
 
-    return Scaffold(
-      backgroundColor: AppTheme.lightTheme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: _onRefresh,
-          color: AppTheme.lightTheme.colorScheme.primary,
-          child: CustomScrollView(
-            slivers: [
-              SliverListSection(isDesktop: isDesktop, isTablet: isTablet),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: !isDesktop
-          ? BottomNavigationSectiion(context: context)
-          : null,
-    );
+    return isDesktop
+        ? LayoutBuilder(
+            builder: (context, constraints) {
+              return Homewebui(constraints: constraints);
+            },
+          )
+        : Scaffold(
+            key: _scaffoldKey,
+
+            backgroundColor: AppTheme.lightTheme.scaffoldBackgroundColor,
+            body: SafeArea(
+              child: RefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: _onRefresh,
+                color: AppTheme.lightTheme.colorScheme.primary,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                      Responsive.isMobile(context)
+                          ? 2.w
+                          : Responsive.isTablet(context)
+                          ? 3.w
+                          : 4.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: Responsive.isMobile(context) ? 2.h : 4.h,
+                        ),
+                        const MetricsCards(isDesktop: false),
+                        SizedBox(
+                          height: Responsive.isMobile(context) ? 2.h : 4.h,
+                        ),
+                        const RevenueChartCard(),
+                        SizedBox(
+                          height: Responsive.isMobile(context) ? 2.h : 4.h,
+                        ),
+                        const QuickActionsSection(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            bottomNavigationBar: !isDesktop
+                ? BottomNavigationSectiion(context: context)
+                : null,
+          );
   }
 }

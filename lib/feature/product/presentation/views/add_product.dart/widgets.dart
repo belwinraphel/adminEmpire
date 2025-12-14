@@ -1393,6 +1393,7 @@ class SubmitProductButton extends StatelessWidget {
   }
 
   void _onSubmit(BuildContext context) {
+    
     final brandState = context.read<BrandBloc>().state;
     final selectedBrand = brandState is LoadedBrand
         ? brandState.selectedBrand
@@ -1405,6 +1406,8 @@ class SubmitProductButton extends StatelessWidget {
         mainCategoryName: mainCategoryName,
         subcategoryName: subcategoryName,
         selectedBrandLabel: selectedBrand?.label,
+        
+        
       ),
     );
   }

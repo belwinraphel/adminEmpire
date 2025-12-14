@@ -3,7 +3,7 @@ import 'package:empire/core/utilis/app_strings.dart';
 import 'package:empire/core/utilis/layout_constants.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
-import 'package:empire/feature/homepage/presentation/view/home_page.dart';
+import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 import 'package:empire/feature/product/domain/usecase/add_product_usecae.dart';
 import 'package:empire/feature/product/domain/usecase/adding_brand_usecase.dart';
 import 'package:empire/feature/product/domain/usecase/get_brand_usecase.dart';
@@ -16,7 +16,7 @@ import 'package:empire/feature/product/presentation/bloc/varient_image_bloc.dart
 import 'package:empire/feature/product/presentation/bloc/brand.dart';
 import 'package:empire/feature/product/presentation/bloc/product_image.dart';
 import 'package:empire/feature/product/presentation/bloc/varient_image_bloc.dart/vareint_Image_state.dart';
-import 'package:empire/feature/product/presentation/bloc/varient_image_bloc.dart/vareint_image_event.dart';
+
 import 'package:empire/feature/product/presentation/views/add_product.dart/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -144,7 +144,7 @@ class AddProductPagewebContent extends StatelessWidget {
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const HomePage()),
+        MaterialPageRoute(builder: (_) => DashBoard()),
         (_) => false,
       );
     } else if (state.status == FormStatus.error) {

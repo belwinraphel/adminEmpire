@@ -26,6 +26,12 @@ class ColoRs {
   static const grey600 = Color(0xFF757575);
   static const grey700 = Color(0xFF616161);
   static const addresBackgroundcolor = Color(0xFFF7F8FA);
+
+ 
+
+  static const primaryColorCode = 0xFFA9DFD8;
+  static const cardBackgroundColor = Color(0xFF21222D);
+
   
 }
  

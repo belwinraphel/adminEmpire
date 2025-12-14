@@ -1,8 +1,4 @@
-import 'package:empire/core/utilis/app_theme.dart';
-import 'package:empire/core/utilis/color.dart';
-import 'package:empire/feature/homepage/presentation/view/widgets/custom_icon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class QuickActionsSectionweb extends StatelessWidget {
   const QuickActionsSectionweb({super.key});
@@ -10,106 +6,109 @@ class QuickActionsSectionweb extends StatelessWidget {
   final List<Map<String, dynamic>> quickActions = const [
     {
       "title": "Add Product",
-      "icon": "add_box",
-      "color": 0xFF059669,
+      "icon": Icons.add_box_outlined,
+      "color": Color(0xFF059669),
       "route": "/admin-product-management",
     },
     {
       "title": "Manage Orders",
-      "icon": "list_alt",
-      "color": 0xFF2563EB,
+      "icon": Icons.list_alt_outlined,
+      "color": Color(0xFF2563EB),
       "route": "/order-history",
-    },
-    {
-      "title": "View Analytics",
-      "icon": "analytics",
-      "color": 0xFFD97706,
-      "route": "/admin-product-management",
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.20,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quick Actions',
-              style: AppTheme.lightTheme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 20),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+    final theme = Theme.of(context);
 
-              itemCount: quickActions.length,
-              itemBuilder: (context, index) {
-                final action = quickActions[index];
-                return _buildActionButtonweb(
-                  context: context,
-                  title: action["title"] as String,
-                  iconName: action["icon"] as String,
-                  color: Color(action["color"] as int),
-                  route: action["route"] as String,
-                );
-              },
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Quick Actions',
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface.withOpacity(0.7),
+          ),
         ),
-      ),
+        const SizedBox(height: 16),
+
+        ...quickActions.map(
+          (action) => _menuItem(
+            context: context,
+            title: action['title'],
+            icon: action['icon'],
+            color: action['color'],
+            route: action['route'],
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildActionButtonweb({
+  Widget _menuItem({
     required BuildContext context,
     required String title,
-    required String iconName,
+    required IconData icon,
     required Color color,
     required String route,
   }) {
+    final theme = Theme.of(context);
+
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, route);
-      },
       borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: CustomIconWidget(
-                iconName: iconName,
-                color: Colors.white,
-                size: 49,
+      onTap: () => Navigator.pushNamed(context, route),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Card(
+          elevation: 9,
+          color: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: theme.colorScheme.surface,
+              border: Border.all(
+                color: theme.colorScheme.outline.withOpacity(0.3),
               ),
             ),
-            SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                title,
-                style: AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w600,
+            child: Row(
+              children: [
+                /// Icon
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(icon, size: 20, color: color),
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+
+                const SizedBox(width: 14),
+
+                /// Title
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+
+                /// Arrow (menu affordance)
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 20,
+                  color: theme.colorScheme.onSurface.withOpacity(0.4),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

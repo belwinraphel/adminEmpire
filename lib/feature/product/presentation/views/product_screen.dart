@@ -12,7 +12,7 @@ import 'package:empire/feature/product/domain/usecase/adding_brand_usecase.dart'
 import 'package:empire/feature/product/domain/usecase/get_brand_usecase.dart';
 import 'package:empire/feature/product/presentation/bloc/add_brand_image.dart';
 import 'package:empire/feature/product/presentation/bloc/brand.dart';
-import 'package:empire/feature/product/presentation/views/add_product.dart/add_product.dart';
+
 import 'package:empire/feature/product/domain/usecase/getproduct_usecase.dart';
 import 'package:empire/feature/product/presentation/bloc/product_bloc.dart';
 import 'package:empire/feature/product/presentation/views/add_product.dart/widgets.dart';
@@ -168,7 +168,7 @@ class ProductScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox30(),
-                          // search(),
+
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -309,13 +309,50 @@ class ProductScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'New Product',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'New Product',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColoRs.elevatedButtonColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AddProductPage(
+                            mainCategoryId: mainCategoryId!,
+                            subcategoryId: subcategory!,
+                            mainCategoryName: mainCategoryName!,
+                            subcategoryName: subcategoryName!,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Add prodcut',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: ColoRs.whiteColor,
+                      fontFamily: Fonts.raleway,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 

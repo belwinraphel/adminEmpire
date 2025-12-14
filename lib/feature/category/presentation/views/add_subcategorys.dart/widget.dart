@@ -176,7 +176,7 @@ class CategoryItemweb extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    height: isDesktop ? 90 : 90,
+                    height: isDesktop ? 69 : 90,
                     width: isDesktop ? 100 : 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),

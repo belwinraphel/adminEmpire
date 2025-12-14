@@ -267,7 +267,7 @@ class AddProductFormBloc
       variantDetails: state.variants,
       brand: event.selectedBrandLabel ?? '',
     );
- 
+
     final result = await _addProductUseCase(
       product,
       event.mainCategoryId,

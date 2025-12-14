@@ -550,27 +550,29 @@ class CategoryItemsweb extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            margin: const EdgeInsets.only(right: 3),
-                            decoration: BoxDecoration(
-                              color: ColoRs.fieldcolor,
-                              borderRadius: _getBorderRadius(
-                                index,
-                                state.categories.length,
+                          child: RepaintBoundary(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.07,
+                              margin: const EdgeInsets.only(right: 3),
+                              decoration: BoxDecoration(
+                                color: ColoRs.fieldcolor,
+                                borderRadius: _getBorderRadius(
+                                  index,
+                                  state.categories.length,
+                                ),
                               ),
-                            ),
-                            child: OptimizedNetworkImage(
-                              imageUrl: state.categories[index].imageUrl,
-                              errorWidget: const Icon(Icons.error),
-                              borderRadius: 7,
-                              fit: BoxFit.fill,
-                              placeholder: Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: const SizedBox(height: 80, width: 85),
+                              child: OptimizedNetworkImage(
+                                imageUrl: state.categories[index].imageUrl,
+                                errorWidget: const Icon(Icons.error),
+                                borderRadius: 7,
+                                fit: BoxFit.fill,
+                                placeholder: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: const SizedBox(height: 80, width: 85),
+                                ),
+                                widthQueryParam: 'resize_width',
                               ),
-                              widthQueryParam: 'resize_width',
                             ),
                           ),
                         );
@@ -626,7 +628,6 @@ Widget buildImagePreview(dynamic image) {
   }
 
   if (image is String && image.startsWith('assets/')) {
-  
     return ClipRRect(
       borderRadius: BorderRadius.circular(13),
       child: Image.asset(image, height: 200, width: 300, fit: BoxFit.cover),
@@ -634,7 +635,6 @@ Widget buildImagePreview(dynamic image) {
   }
 
   if (image is String && image.startsWith('http')) {
- 
     return ClipRRect(
       borderRadius: BorderRadius.circular(13),
       child: Image.network(image, height: 200, width: 300, fit: BoxFit.cover),
@@ -642,7 +642,6 @@ Widget buildImagePreview(dynamic image) {
   }
 
   if (image is String) {
- 
     return ClipRRect(
       borderRadius: BorderRadius.circular(13),
       child: Image.file(

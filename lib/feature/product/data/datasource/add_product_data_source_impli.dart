@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:empire/core/utilis/failure.dart';
 import 'package:empire/core/utilis/widgets.dart';
-
 import 'package:empire/feature/product/domain/enities/listproducts.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:flutter/foundation.dart';
@@ -100,7 +98,7 @@ class ProductDataSourceImpli extends ProductDataSource {
           return Left(Exception("Variant image upload failed: $e"));
         }
       }
-
+      print(uploadedVariantImageUrl);
       uploadedVariantDetails.add({
         'name': variant.name,
         'image': uploadedVariantImageUrl,
