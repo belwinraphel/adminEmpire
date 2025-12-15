@@ -770,10 +770,7 @@ class AddImageButton extends StatelessWidget {
     );
   }
 }
-
-// ============================================================================
-// PART 11: PRESENTATION LAYER - DIMENSIONS SECTION
-// ============================================================================
+ 
 class ConditionalDimensionsSection extends StatelessWidget {
   const ConditionalDimensionsSection({super.key});
 
@@ -1346,9 +1343,7 @@ class ProductBrandSection extends StatelessWidget {
   }
 }
 
-// ============================================================================
-// PART 14: PRESENTATION LAYER - SUBMIT BUTTON
-// ============================================================================
+ 
 class SubmitProductButton extends StatelessWidget {
   final String mainCategoryId;
   final String subcategoryId;

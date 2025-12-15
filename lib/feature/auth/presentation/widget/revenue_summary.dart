@@ -26,13 +26,6 @@ class ReveneSummaryCard extends StatelessWidget {
           if (state.revenueData.isEmpty) {
             return RevenueErrorCard(state: state);
           }
-          if (state.revenueData.isNotEmpty) {
-            return _analyticsBigCard(
-              context: context,
-              state: state,
-              summary: summary!,
-            );
-          }
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -62,64 +55,61 @@ class ReveneSummaryCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Container(
-            padding: const EdgeInsets.all(28),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: theme.colorScheme.outline.withOpacity(0.4),
+        child: Container(
+          padding: const EdgeInsets.all(28),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: theme.colorScheme.outline.withOpacity(0.4),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// HEADER
-                _analyticsHeader(context, state),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// HEADER
+              _analyticsHeader(context, state),
 
-                const SizedBox(height: 32),
+              const SizedBox(height: 32),
 
-                /// VERTICAL STATS
-                _statTile(
-                  context,
-                  icon: Icons.payments_outlined,
-                  title: 'Total Revenue',
-                  value: _formatCurrency(summary.totalRevenue).toString(),
-                  change: summary.revenueChange,
-                ),
+              /// VERTICAL STATS
+              _statTile(
+                context,
+                icon: Icons.payments_outlined,
+                title: 'Total Revenue',
+                value: _formatCurrency(summary.totalRevenue).toString(),
+                change: summary.revenueChange,
+              ),
 
-                const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-                _statTile(
-                  context,
-                  icon: Icons.shopping_cart_outlined,
-                  title: 'Avg. Order Value',
-                  value: _formatCurrency(summary.averageOrderValue).toString(),
-                  change: summary.aovChange,
-                ),
+              _statTile(
+                context,
+                icon: Icons.shopping_cart_outlined,
+                title: 'Avg. Order Value',
+                value: _formatCurrency(summary.averageOrderValue).toString(),
+                change: summary.aovChange,
+              ),
 
-                const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-                _statTile(
-                  context,
-                  icon: Icons.trending_up_outlined,
-                  title: 'Conversion Rate',
-                  value: '${summary.conversionRate.toStringAsFixed(1)}%',
-                  change: summary.conversionChange,
-                ),
+              _statTile(
+                context,
+                icon: Icons.trending_up_outlined,
+                title: 'Conversion Rate',
+                value: '${summary.conversionRate.toStringAsFixed(1)}%',
+                change: summary.conversionChange,
+              ),
 
-                const SizedBox(height: 32),
-              ],
-            ),
+              const SizedBox(height: 32),
+            ],
           ),
         ),
       ),
@@ -206,8 +196,7 @@ class ReveneSummaryCard extends StatelessWidget {
   Widget _analyticsHeader(BuildContext context, RevenueState state) {
     final theme = Theme.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +235,9 @@ class ReveneSummaryCard extends StatelessWidget {
                   value: period,
                   child: Text(
                     period.name.toUpperCase(),
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: MediaQuery.of(context).size.width * 0.008,
+                    ),
                   ),
                 );
               }).toList(),

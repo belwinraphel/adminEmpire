@@ -11,7 +11,7 @@ class AddProductFormBloc
   final ValidateProductFormUseCase _validateProductFormUseCase;
   final GetDefaultVariantsUseCase _getDefaultVariantsUseCase;
   final AddProductUseCase _addProductUseCase;
-
+  
   AddProductFormBloc({
     required ValidateProductFormUseCase validateProductFormUseCase,
     required GetDefaultVariantsUseCase getDefaultVariantsUseCase,

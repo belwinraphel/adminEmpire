@@ -80,15 +80,19 @@ class ProductDataSourceImpli extends ProductDataSource {
         return Left(Exception("Image upload failed: $e"));
       }
     }
+    // ----------------------------------------
+    // UPLOAD VARIANT IMAGES
+    // ----------------------------------------
 
     for (var variant in product.variantDetails) {
       String? uploadedVariantImageUrl;
 
-      if (variant.image != null) {
+      if (variant.imageweb != null) {
         try {
           if (kIsWeb) {
+            final Uint8List imgBytes = variant.imageweb!;
             uploadedVariantImageUrl = await uploadImageToCloudinary(
-              bytes: variant.imageweb,
+              bytes: imgBytes,
             );
           } else {
             final file = File(variant.image!);
@@ -98,7 +102,7 @@ class ProductDataSourceImpli extends ProductDataSource {
           return Left(Exception("Variant image upload failed: $e"));
         }
       }
-      print(uploadedVariantImageUrl);
+      logger.f(uploadedVariantImageUrl);
       uploadedVariantDetails.add({
         'name': variant.name,
         'image': uploadedVariantImageUrl,
@@ -188,7 +192,9 @@ class ProductDataSourceImpli extends ProductDataSource {
         }
 
         try {
-          image = await uploadImageToCloudinary(bytes: brand.imageweburl);
+          final Uint8List imgBytes = brand.imageweburl;
+
+          image = await uploadImageToCloudinary(bytes: imgBytes);
         } catch (e) {
           return left(Failures.network('Failed to upload image: $e'));
         }

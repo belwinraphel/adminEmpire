@@ -26,7 +26,7 @@ class BrandAddingEvent extends BrandEvent {
   final String mainCategoryId;
   final String subCategoryId;
   final Brand brand;
-  final Uint8List? imageBytes;
+  final dynamic imageBytes;
   BrandAddingEvent({
     required this.mainCategoryId,
     this.imageBytes,
@@ -68,7 +68,7 @@ class BrandError extends BrandState {
   List<Object> get props => [error];
 }
 
-class     BrandBloc extends Bloc<BrandEvent, BrandState> {
+class BrandBloc extends Bloc<BrandEvent, BrandState> {
   final AddBrandUseCase addBrandUseCase;
   final GetBrandsUseCase getBrandsUseCase;
 

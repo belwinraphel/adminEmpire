@@ -78,8 +78,7 @@ class AddBrandImage extends Bloc<ImageEvent, AddBrandImageState> {
     final result = await pickImageFromCameraUsecaseUseCase();
     if (result != null) {
       emit(BarndImagePicked(result));
-    }
-    {
+    } else {
       emit(const ImageError('Please try agin'));
     }
   }
@@ -92,8 +91,7 @@ class AddBrandImage extends Bloc<ImageEvent, AddBrandImageState> {
     final result = await pickImageFromGalleryusecaseUseCase();
     if (result != null) {
       emit(BarndImagePicked(result));
-    }
-    {
+    } else {
       emit(const ImageError('Please try agin'));
     }
   }

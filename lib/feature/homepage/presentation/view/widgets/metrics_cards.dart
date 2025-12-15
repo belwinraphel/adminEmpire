@@ -125,7 +125,7 @@ class _MetricsCardsContent extends StatelessWidget {
 
   Widget _buildMetricsGridweb(MetricsState state, BuildContext context) {
     if (state.isLoading) {
-      return _buildLoadingGrid();
+      return _buildLoadingWebGrid();
     } else if (state.error != null) {
       return _buildErrorState(state.error!, context);
     } else if (state.metricsData.isEmpty) {
@@ -138,7 +138,7 @@ class _MetricsCardsContent extends StatelessWidget {
 
     return GridView.builder(
       shrinkWrap: true,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: !isDesktop ? 2 : 4,
@@ -174,15 +174,13 @@ class _MetricsCardsContent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Text(
-                      metric.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontWeight: FontWeight.w500,
-                      ),
+                  Text(
+                    metric.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Container(
@@ -200,27 +198,26 @@ class _MetricsCardsContent extends StatelessWidget {
                 ],
               ),
 
-              const Spacer(),
-
               /// ───── VALUE ─────
               Text(
                 metric.value,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
+                  fontSize: MediaQuery.of(context).size.width * 0.01,
                   letterSpacing: -0.5,
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const Spacer(),
 
               /// ───── CHANGE ─────
-              Row(
+              Wrap(
                 children: [
                   Icon(
                     metric.isPositive
                         ? Icons.arrow_upward_rounded
                         : Icons.arrow_downward_rounded,
-                    size: 18,
+                    size: MediaQuery.of(context).size.width * 0.001,
                     color: metric.isPositive ? Colors.green : Colors.red,
                   ),
                   const SizedBox(width: 4),
@@ -228,14 +225,18 @@ class _MetricsCardsContent extends StatelessWidget {
                     metric.change,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
+                      fontSize: MediaQuery.of(context).size.width * 0.007,
                       color: metric.isPositive ? Colors.green : Colors.red,
                     ),
                   ),
                   const SizedBox(width: 6),
                   Text(
                     'vs last period',
+                    maxLines: 1,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 9.sp,
+                      fontSize: MediaQuery.of(context).size.width * 0.0089,
+                      overflow: TextOverflow.clip,
+
                       color: theme.colorScheme.onSurface.withOpacity(0.5),
                     ),
                   ),
@@ -261,6 +262,23 @@ class _MetricsCardsContent extends StatelessWidget {
       itemCount: 4,
       itemBuilder: (context, index) {
         return _buildMetricCardShimmer();
+      },
+    );
+  }
+
+  Widget _buildLoadingWebGrid() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 3.w,
+        mainAxisSpacing: 2.h,
+        childAspectRatio: 1.9,
+      ),
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return _buildMetricWebCardShimmer();
       },
     );
   }
@@ -463,6 +481,58 @@ class _MetricsCardsContent extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMetricWebCardShimmer() {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 2.w, bottom: 3.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 10.w,
+                  height: 1.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(2.w),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.circle, color: Colors.grey[400], size: 20),
+                ),
+              ],
+            ),
+            Container(
+              width: 10.w,
+              height: 3.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            Container(
+              width: 10.w,
+              height: 2.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
         ),
       ),
     );
