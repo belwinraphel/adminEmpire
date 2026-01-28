@@ -1,5 +1,5 @@
-import 'package:empire/core/utilis/commonvalidator.dart';
-import 'package:empire/core/utilis/constants.dart';
+import 'package:empire/core/utils/commonvalidator.dart';
+import 'package:empire/core/utils/constants.dart';
 import 'package:empire/feature/product/presentation/views/add_product.dart/widgets.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/app_theme.dart';
+import 'package:empire/core/utils/app_theme.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/custom_icon_widget.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/constants.dart';
+import 'package:empire/core/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthCheckingLoginStatus {

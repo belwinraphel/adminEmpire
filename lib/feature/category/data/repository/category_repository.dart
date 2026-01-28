@@ -1,15 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
-import 'package:empire/core/utilis/failure.dart';
+import 'package:empire/core/utils/failure.dart';
 import 'package:empire/feature/category/data/datasource/category_data_source.dart';
 import 'package:empire/feature/category/domain/entities/category_entities.dart';
 
 import 'package:empire/feature/category/domain/repositories/category_repository.dart';
 
-class CategoryRepositoryImpli implements CategoryRepository {
+class CategoryRepositoryImpl implements CategoryRepository {
   final CategoryDataSource categoryDataSource;
-  CategoryRepositoryImpli(this.categoryDataSource);
+  CategoryRepositoryImpl(this.categoryDataSource);
 
   @override
   Future<Either<Failures, Unit>> addingSubCategory(

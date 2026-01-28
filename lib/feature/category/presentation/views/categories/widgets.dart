@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/color.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/color.dart';
+import 'package:empire/core/utils/widgets.dart';
 
 import 'package:empire/feature/category/domain/entities/category_entities.dart';
 import 'package:empire/feature/category/domain/usecase/categories/getting_subcategory_usecase.dart';

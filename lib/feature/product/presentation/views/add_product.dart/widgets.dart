@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:empire/core/utilis/app_strings.dart';
-import 'package:empire/core/utilis/constants.dart';
-import 'package:empire/core/utilis/layout_constants.dart';
-import 'package:empire/core/utilis/validation_error.dart';
+import 'package:empire/core/utils/app_strings.dart';
+import 'package:empire/core/utils/constants.dart';
+import 'package:empire/core/utils/layout_constants.dart';
+import 'package:empire/core/utils/validation_error.dart';
 import 'package:empire/feature/product/domain/enities/listproducts.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:empire/feature/product/presentation/bloc/add_product_form_bloc/add_product_form_event.dart';

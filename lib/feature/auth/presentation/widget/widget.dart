@@ -1,8 +1,8 @@
-import 'package:empire/core/utilis/color.dart';
+import 'package:empire/core/utils/color.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:empire/core/utilis/fonts.dart';
+import 'package:empire/core/utils/fonts.dart';
 
 class LoginField extends StatelessWidget {
   const LoginField({

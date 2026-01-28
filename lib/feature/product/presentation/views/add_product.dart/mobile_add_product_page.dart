@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:empire/core/di/service_locator.dart';
  
-import 'package:empire/core/utilis/commonvalidator.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/commonvalidator.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/auth/data/datasource/image_profile.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 
  
-import 'package:empire/feature/product/data/datasource/add_product_data_source_impli.dart';
+import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
 import 'package:empire/feature/product/data/repository/add_product_respository.dart';
  
 import 'package:empire/feature/product/domain/enities/product_entities.dart';

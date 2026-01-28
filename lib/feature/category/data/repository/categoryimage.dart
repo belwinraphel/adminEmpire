@@ -2,9 +2,9 @@ import 'package:empire/feature/category/data/datasource/categoryimage.dart';
 
 import '../../domain/repositories/categoryimage_repository.dart';
 
-class CategoryImageImpli implements Categoryimage {
+class CategoryImageImpl implements Categoryimage {
   final CategoryImageSources imageSource;
-  CategoryImageImpli(this.imageSource);
+  CategoryImageImpl(this.imageSource);
   @override
   Future<dynamic> categoryImageFromGallery() {
     return imageSource.pickFromGallery();

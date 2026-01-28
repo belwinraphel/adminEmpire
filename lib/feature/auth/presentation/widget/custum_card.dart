@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/color.dart';
+import 'package:empire/core/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {

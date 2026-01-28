@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:empire/core/utilis/fonts.dart';
+import 'package:empire/core/utils/fonts.dart';
 import 'package:flutter/material.dart';
 
 class SizedBox10 extends StatelessWidget {

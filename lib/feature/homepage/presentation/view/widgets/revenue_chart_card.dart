@@ -249,13 +249,13 @@ class _RevenueChartCardContent extends StatelessWidget {
 
     return RepaintBoundary(
       child: AspectRatio(
-        // Responsive: Maintain 16:5 aspect on desktop, square-ish on mobile
+   
         aspectRatio: isDesktop ? 16 / 5 : 1,
         child: LineChart(
           LineChartData(
             gridData: FlGridData(
               show: true,
-              drawVerticalLine: !isDesktop, // Fewer verticals on desktop
+              drawVerticalLine: !isDesktop,  
               horizontalInterval: _calculateInterval(
                 state.summary?.totalRevenue ?? 0,
               ),
@@ -273,7 +273,7 @@ class _RevenueChartCardContent extends StatelessWidget {
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: isDesktop ? 40 : 30, // More space for labels
+                  reservedSize: isDesktop ? 40 : 30,  
                   interval: interval.toDouble(),
                   getTitlesWidget: (double value, TitleMeta meta) {
                     if (value.toInt() >= 0 &&

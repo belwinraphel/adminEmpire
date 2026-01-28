@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/commonvalidator.dart';
-import 'package:empire/core/utilis/fonts.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/commonvalidator.dart';
+import 'package:empire/core/utils/fonts.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/category/domain/usecase/categories/category_image_camera.dart';
 import 'package:empire/feature/category/domain/usecase/categories/catgeroyimgae_gallery.dart';
 
@@ -21,10 +21,10 @@ import 'package:sizer/sizer.dart';
 class AddCategory extends StatelessWidget {
   AddCategory({super.key});
   TextEditingController category = TextEditingController(
-    text: 'Home application',
+    text: '',
   );
   TextEditingController description = TextEditingController(
-    text: 'This is Home Application category have wide variety product ',
+    text: '',
   );
   final GlobalKey<FormState> categorykey = GlobalKey<FormState>();
 

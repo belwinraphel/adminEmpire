@@ -1,35 +1,25 @@
  
 
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/app_theme.dart';
-import 'package:empire/core/utilis/constants.dart';
-
+import 'package:empire/core/utils/app_theme.dart';
+import 'package:empire/core/utils/constants.dart';
 import 'package:empire/feature/auth/domain/usecase/Login_status_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 import 'package:empire/feature/auth/presentation/bloc/profile_image_bloc.dart';
-
- 
 import 'package:empire/feature/category/domain/usecase/categories/adding_category_usecase.dart';
-
 import 'package:empire/feature/category/domain/usecase/categories/get_category_usecase.dart';
-
 import 'package:empire/feature/category/domain/usecase/categories/getting_subcategory_usecase.dart';
-
 import 'package:empire/feature/auth/presentation/bloc/login_status_bloc.dart';
-
 import 'package:empire/feature/category/presentation/bloc/category_bloc/adding_category.dart';
-
 import 'package:empire/feature/category/presentation/bloc/category_bloc/get_category_bloc.dart';
 import 'package:empire/feature/category/presentation/bloc/category_bloc/get_subcategory.dart';
 import 'package:empire/feature/category/presentation/views/categories/category_page.dart';
 import 'package:empire/feature/category/presentation/views/splashScreen/starting_page.dart';
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
-
- 
 import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 import 'package:empire/feature/order/presentation/view/order_page.dart';
-import 'package:empire/feature/product/data/datasource/add_product_data_source_impli.dart';
+import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
 
 import 'package:empire/feature/product/data/repository/add_product_respository.dart';
 import 'package:empire/feature/product/domain/usecase/add_product_usecae.dart';

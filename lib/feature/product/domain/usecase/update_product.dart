@@ -1,5 +1,5 @@
 // import 'package:dartz/dartz.dart';
-// import 'package:empire/core/utilis/failure.dart';
+// import 'package:empire/core/utils/failure.dart';
 // import 'package:empire/feature/product/domain/enities/product_entities.dart';
 // import 'package:empire/feature/product/domain/repository/product_repository.dart';
 

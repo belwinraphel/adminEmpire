@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "6225028dff4e4a3c7b1dac28d28f15dd",
+const RESOURCES = {"flutter_bootstrap.js": "d039c223618fb117227b66da6291bec6",
 "version.json": "16f4b207b09c9b1eb4386d0050843d65",
 "index.html": "d0ef35d0ea65c7cd7d1249202e2829b9",
 "/": "d0ef35d0ea65c7cd7d1249202e2829b9",
-"main.dart.js": "b53b8a6e1715bf67839eab69d47f1b2e",
+"main.dart.js": "bc568e764ca74870ecbeee91145947b4",
 "flutter.js": "83d881c1dbb6d6bcd6b42e274605b69c",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
@@ -25,7 +25,7 @@ const RESOURCES = {"flutter_bootstrap.js": "6225028dff4e4a3c7b1dac28d28f15dd",
 "assets/fonts/Raleway-SemiBold.ttf": "66c9748f1e4aae2e764d5c50c05f7841",
 "assets/fonts/Raleway-ExtraBold.ttf": "4e37fffb940ad5e5b9b96f59079e2014",
 "assets/fonts/Raleway-Regular.ttf": "6310192cd2011f527e18b1586a1245c8",
-"assets/fonts/MaterialIcons-Regular.otf": "b604b3064588c0a28b42de7088924ad5",
+"assets/fonts/MaterialIcons-Regular.otf": "21342719ed154c1cf6e450a1d73304d1",
 "assets/fonts/Raleway-Bold.ttf": "9aefa157ae4a8f7ff923dd88cee3917f",
 "assets/assets/NoBrand.json": "e02a97e99d24c50a4c29ebc30b91b6f0",
 "assets/assets/burlap%2520bags%2520with%2520vegetables.png": "238c7c4f0ad8e6d01eeb1ee299c49688",

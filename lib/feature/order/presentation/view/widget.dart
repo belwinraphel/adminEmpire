@@ -1,5 +1,5 @@
-import 'package:empire/core/utilis/fonts.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/fonts.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/order/domain/entity/oder_entity.dart';
 import 'package:empire/feature/order/presentation/Bloc/order_bloc.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class Emptyorder extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: AspectRatio(
-                  aspectRatio: 1,
+                  aspectRatio: 3,
                   child: SvgPicture.string(
                     emptyCatyIllustration,
                     fit: BoxFit.scaleDown,
@@ -226,6 +226,7 @@ class OrderHeader extends StatelessWidget {
         return 'shipped';
       case 'delivered':
         return 'Delivered';
+
       default:
         return status;
     }
@@ -237,6 +238,7 @@ class OrderHeader extends StatelessWidget {
     'pending',
     'succeeded',
     'completed',
+    'Processing',
     'delivered',
     'cancelled',
     'failed',

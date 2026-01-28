@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:empire/core/utilis/failure.dart';
+import 'package:empire/core/utils/failure.dart';
 import 'package:empire/feature/order/data/model/order_model.dart';
 import 'package:logger/logger.dart';
 

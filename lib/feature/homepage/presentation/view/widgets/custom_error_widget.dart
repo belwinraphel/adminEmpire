@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/app_theme.dart';
+import 'package:empire/core/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
