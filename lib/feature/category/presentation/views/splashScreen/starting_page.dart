@@ -1,6 +1,6 @@
-import 'package:empire/core/utilis/color.dart';
-import 'package:empire/core/utilis/fonts.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/color.dart';
+import 'package:empire/core/utils/fonts.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/auth/presentation/view/login_page.dart';
 
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/app_strings.dart';
-import 'package:empire/core/utilis/layout_constants.dart';
+import 'package:empire/core/utils/app_strings.dart';
+import 'package:empire/core/utils/layout_constants.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';

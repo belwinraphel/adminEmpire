@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/layout_constants.dart';
+import 'package:empire/core/utils/layout_constants.dart';
 import 'package:empire/feature/product/domain/enities/form_validatioon.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:equatable/equatable.dart';

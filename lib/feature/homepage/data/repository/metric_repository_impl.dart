@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:empire/feature/homepage/data/datasource/metric_remotedatasource.dart';
 import 'package:empire/feature/homepage/domain/entities/metric_entity.dart';
 import 'package:empire/feature/homepage/domain/repository/metric_repository.dart';
-import 'package:empire/feature/revenue/data/repository/revenue_repository_impli.dart';
+import 'package:empire/feature/revenue/data/repository/revenue_repository_impl.dart';
 
 class MetricsRepositoryImpl implements MetricsRepository {
   final MetricsRemoteDataSource remoteDataSource;

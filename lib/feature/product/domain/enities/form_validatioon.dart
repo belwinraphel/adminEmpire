@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/validation_error.dart';
+import 'package:empire/core/utils/validation_error.dart';
 
 class FormValidationResult {
   final Map<String, ValidationError> errors;

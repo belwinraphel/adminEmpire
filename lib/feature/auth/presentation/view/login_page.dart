@@ -1,10 +1,9 @@
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/commonvalidator.dart';
+import 'package:empire/core/utils/commonvalidator.dart';
 import 'package:empire/feature/auth/domain/usecase/save_login_status_usecase.dart';
 import 'package:empire/feature/auth/presentation/bloc/login_bloc.dart';
 import 'package:empire/feature/auth/presentation/widget/widget.dart';
 
-import 'package:empire/feature/homepage/presentation/view/home_page.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:empire/feature/auth/data/datasource/auth_repo.dart';
 import 'package:empire/feature/category/data/datasource/category_data_source.dart';
-import 'package:empire/feature/category/data/datasource/category_data_source_impli.dart';
+import 'package:empire/feature/category/data/datasource/category_data_source_impl.dart';
 import 'package:empire/feature/auth/data/datasource/checking_login_status.dart';
 import 'package:empire/feature/auth/data/datasource/image_profile.dart';
 import 'package:empire/feature/category/data/datasource/categoryimage.dart';
@@ -10,20 +10,20 @@ import 'package:empire/feature/category/domain/repositories/categoryimage_reposi
 import 'package:empire/feature/category/domain/usecase/categories/category_image_camera.dart';
 import 'package:empire/feature/category/domain/usecase/categories/catgeroyimgae_gallery.dart';
 import 'package:empire/feature/homepage/data/datasource/metric_remotedatasource.dart';
-import 'package:empire/feature/homepage/data/repository/metric_repp_impli.dart';
+import 'package:empire/feature/homepage/data/repository/metric_repository_impl.dart';
 import 'package:empire/feature/homepage/domain/repository/metric_repository.dart';
 import 'package:empire/feature/homepage/domain/usecase/get_metric_summary_usecase.dart';
 import 'package:empire/feature/homepage/domain/usecase/get_metrics_usecase.dart';
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
 import 'package:empire/feature/order/data/datasource/orderdatasource.dart';
-import 'package:empire/feature/order/data/repository/order_repository_impli.dart';
+import 'package:empire/feature/order/data/repository/order_repository_impl.dart';
 import 'package:empire/feature/order/domain/repository/order_repository.dart';
 import 'package:empire/feature/order/domain/usecase/order_usecase.dart';
 import 'package:empire/feature/order/domain/usecase/update_order_status_usecase.dart';
 import 'package:empire/feature/order/domain/usecase/wacthorder_usecase.dart';
 import 'package:empire/feature/order/presentation/Bloc/order_bloc.dart';
 
-import 'package:empire/feature/product/data/datasource/add_product_data_source_impli.dart';
+import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
 import 'package:empire/feature/auth/data/datasource/register.dart';
 import 'package:empire/feature/auth/data/repository/auth_repository..dart';
 import 'package:empire/feature/category/data/repository/category_repository.dart';
@@ -57,7 +57,7 @@ import 'package:empire/feature/product/domain/usecase/adding_brand_usecase.dart'
 import 'package:empire/feature/product/domain/usecase/get_brand_usecase.dart';
 
 import 'package:empire/feature/revenue/data/datasource/revenue_datasource.dart';
-import 'package:empire/feature/revenue/data/repository/revenue_repository_impli.dart';
+import 'package:empire/feature/revenue/data/repository/revenue_repository_impl.dart';
 import 'package:empire/feature/revenue/domain/repository/revenue_repo.dart';
 import 'package:empire/feature/revenue/domain/usecase/get_revenue.dart';
 import 'package:empire/feature/revenue/domain/usecase/get_revenue_usecase.dart';
@@ -91,7 +91,7 @@ Future<void> init() async {
   //////////////////////profile////////////////////
   sl.registerSingleton(() => ImagePicker());
   sl.registerLazySingleton(() => ImageSources());
-  sl.registerSingleton<ProfileImage>(ProfileImageImpli(sl()));
+  sl.registerSingleton<ProfileImage>(ProfileImageImpl(sl()));
   sl.registerSingleton<PickImageFromCameraUsecase>(
     PickImageFromCameraUsecase(sl()),
   );
@@ -104,7 +104,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => UserFirebaseSource(firestore));
   sl.registerLazySingleton<RegisterRepository>(
-    () => RegisterRepositoryimpli(sl()),
+    () => RegisterRepositoryImpl(sl()),
   );
   sl.registerLazySingleton(() => CheckingUser(sl()));
  
@@ -121,7 +121,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpli(sl()),
+    () => CategoryRepositoryImpl(sl()),
   );
   sl.registerLazySingleton(
     () => AddingcategoryUseCase(sl<CategoryRepository>()),
@@ -130,7 +130,7 @@ Future<void> init() async {
   //////////////////////categoryimage////////////////////
 
   sl.registerLazySingleton(() => CategoryImageSources());
-  sl.registerSingleton<Categoryimage>(CategoryImageImpli(sl()));
+  sl.registerSingleton<Categoryimage>(CategoryImageImpl(sl()));
   sl.registerSingleton<CategoryImageCamera>(CategoryImageCamera(sl()));
   sl.registerSingleton<CategoryImagegallery>(CategoryImagegallery(sl()));
 
@@ -146,7 +146,7 @@ Future<void> init() async {
   );
   //////product
 
-  sl.registerLazySingleton<ProductDataSource>(() => ProductDataSourceImpli());
+  sl.registerLazySingleton<ProductDataSource>(() => ProductDataSourceImpl());
 
 
   sl.registerLazySingleton<ProductRepository>(

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
-import 'package:empire/core/utilis/failure.dart';
+import 'package:empire/core/utils/failure.dart';
 import 'package:empire/feature/category/domain/entities/category_entities.dart';
 
 abstract class CategoryRepository {

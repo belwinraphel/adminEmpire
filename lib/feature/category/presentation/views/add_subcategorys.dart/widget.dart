@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:empire/core/utilis/color.dart';
-import 'package:empire/core/utilis/fonts.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/color.dart';
+import 'package:empire/core/utils/fonts.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/category/domain/entities/category_entities.dart';
 import 'package:empire/feature/category/presentation/bloc/category_bloc/get_category_bloc.dart';
 import 'package:empire/feature/category/presentation/bloc/category_bloc/get_subcategory.dart';

@@ -1,7 +1,7 @@
  
 import 'package:dartz/dartz.dart';
-import 'package:empire/core/utilis/failure.dart';
-import 'package:empire/feature/product/data/datasource/add_product_data_source_impli.dart';
+import 'package:empire/core/utils/failure.dart';
+import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
 
 import 'package:empire/feature/product/domain/enities/listproducts.dart';
 

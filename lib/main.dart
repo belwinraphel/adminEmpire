@@ -1,5 +1,5 @@
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/bloc_observer.dart';
+import 'package:empire/core/utils/bloc_observer.dart';
 
 import 'package:empire/feature/category/presentation/views/my_app.dart/landingpage.dart';
 

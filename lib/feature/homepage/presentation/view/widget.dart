@@ -1,11 +1,11 @@
-import 'package:empire/core/utilis/app_theme.dart';
- 
+import 'package:empire/core/utils/app_theme.dart';
+
 import 'package:empire/feature/homepage/presentation/view/homewebui.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/custom_icon_widget.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/quick_actions_section.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/revenue_chart_card.dart';
- 
+
 import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
@@ -397,8 +397,8 @@ class BottomBar extends StatelessWidget {
   }
 }
 
-class BottomNavigationSectiion extends StatelessWidget {
-  const BottomNavigationSectiion({super.key, required this.context});
+class BottomNavigationSection extends StatelessWidget {
+  const BottomNavigationSection({super.key, required this.context});
 
   final BuildContext context;
 

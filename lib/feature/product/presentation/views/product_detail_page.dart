@@ -1,5 +1,5 @@
-import 'package:empire/core/utilis/fonts.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/fonts.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:empire/feature/product/presentation/bloc/add_product.dart';
 

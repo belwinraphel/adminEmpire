@@ -1,4 +1,4 @@
-import 'package:empire/core/utilis/app_theme.dart';
+import 'package:empire/core/utils/app_theme.dart';
 
 import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
 

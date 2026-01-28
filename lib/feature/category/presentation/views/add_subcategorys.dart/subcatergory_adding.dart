@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:empire/core/di/service_locator.dart';
-import 'package:empire/core/utilis/color.dart';
+import 'package:empire/core/utils/color.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 import 'package:empire/feature/auth/presentation/bloc/profile_image_bloc.dart';

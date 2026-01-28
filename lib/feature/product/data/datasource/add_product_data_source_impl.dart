@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:empire/core/utilis/failure.dart';
-import 'package:empire/core/utilis/widgets.dart';
+import 'package:empire/core/utils/failure.dart';
+import 'package:empire/core/utils/widgets.dart';
 import 'package:empire/feature/product/domain/enities/listproducts.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +43,7 @@ abstract class ProductDataSource {
   );
 }
 
-class ProductDataSourceImpli extends ProductDataSource {
+class ProductDataSourceImpl extends ProductDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var logger = Logger();
   @override
