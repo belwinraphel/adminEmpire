@@ -1,5 +1,6 @@
 import 'package:empire/core/utilis/color.dart';
-import 'package:empire/feature/homepage/presentation/view/widgets/quick_section_web.dart';
+import 'package:empire/feature/homepage/presentation/view/widgets/ine_chart_caed.dart';
+
 import 'package:empire/feature/revenue/domain/entity/revenue_entity.dart';
 import 'package:empire/feature/revenue/presentation/bloc/revenue_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -35,7 +36,7 @@ class _RevenueChartCardContentweb extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ///header --Revenue & week
-                _buildHeaderweb(context, state),
+                _buildHeaderWeb(context, state),
                 SizedBox(height: 2.h),
 
                 ///loading
@@ -51,12 +52,14 @@ class _RevenueChartCardContentweb extends StatelessWidget {
                   SizedBox(height: 2.h),
                   _buildEmptyStateweb(context),
                 ] else ...[
-                  ////  ui
+                  LineChartCard(state: state),
+
+                  //  ui
                   // SizedBox(height: screenHeight * 0.50),
-                  SizedBox(
-                    height: screenHeight * 0.50,
-                    child: _buildChartweb(state, context),
-                  ),
+                  // SizedBox(
+                  //   height: screenHeight * 0.50,
+                  //   child: _buildRevenueChartWeb(state, context),
+                  // ),
                 ],
                 // SizedBox(height: 1.h),
                 // _buildRealtimeToggleweb(context, state),
@@ -68,54 +71,85 @@ class _RevenueChartCardContentweb extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderweb(BuildContext context, RevenueState state) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isDesktop = screenWidth > 1200;
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.30,
+  Widget _buildHeaderWeb(BuildContext context, RevenueState state) {
+    final theme = Theme.of(context);
 
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Revenue Analytics',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          Container(
-            height: screenHeight * 0.04,
-            width: screenWidth * 0.07,
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).colorScheme.outline),
-              borderRadius: BorderRadius.circular(8),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        /// ---------------- LEFT : TITLE ----------------
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Revenue Analytics',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            child: Center(
-              child: DropdownButtonHideUnderline(
+            const SizedBox(height: 4),
+            Text(
+              'Overview of sales performance',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+
+        /// ---------------- RIGHT : FILTER ----------------
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.colorScheme.outline.withOpacity(0.4),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.calendar_month_outlined,
+                size: 18,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              DropdownButtonHideUnderline(
                 child: DropdownButton<RevenuePeriod>(
                   value: state.period,
                   isDense: true,
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
                   items: RevenuePeriod.values.map((period) {
                     return DropdownMenuItem<RevenuePeriod>(
                       value: period,
                       child: Text(
                         _getPeriodDisplayNameweb(period),
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     );
                   }).toList(),
-                  onChanged: (RevenuePeriod? newValue) {
-                    if (newValue != null) {
+                  onChanged: (value) {
+                    if (value != null) {
                       context.read<RevenueBloc>().add(
-                        RevenuePeriodChanged(newValue),
+                        RevenuePeriodChanged(value),
                       );
                     }
                   },
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -167,7 +201,7 @@ class _RevenueChartCardContentweb extends StatelessWidget {
                   'Revenue analytics will appear here once you start receiving orders',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: isDesktop ? 14.sp : 12.sp,
+                    fontSize: isDesktop ? 10.sp : 12.sp,
                     color: Colors.grey.withOpacity(0.7),
                   ),
                 ),
@@ -175,8 +209,6 @@ class _RevenueChartCardContentweb extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 2.h),
-        _buildEmptyStats(isDesktop),
       ],
     );
   }
@@ -246,62 +278,68 @@ class _RevenueChartCardContentweb extends StatelessWidget {
     );
   }
 
-  Widget _buildChartweb(RevenueState state, BuildContext context) {
+  Widget _buildRevenueChartWeb(RevenueState state, BuildContext context) {
     final revenueData = state.revenueData;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenheight = MediaQuery.of(context).size.height;
-    final maxX = (revenueData.length - 1).toDouble();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            border: Border.all(color: ColoRs.fieldcolor),
-            borderRadius: BorderRadius.circular(10),
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        border: Border.all(color: ColoRs.fieldcolor),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Revenue Overview',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
-          width: screenWidth * 0.30,
-          child: RepaintBoundary(
+          const SizedBox(height: 20),
+
+          /// ✅ Same pattern as LineChartCard
+          AspectRatio(
+            aspectRatio: 16 / 6,
             child: LineChart(
               LineChartData(
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: _calculateInterval(
-                    state.summary?.totalRevenue ?? 0,
-                  ),
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  ),
-                ),
+                minX: 0,
+                maxX: (revenueData.length - 1).toDouble(),
+                minY: 0,
+                maxY: _calculateMaxY(revenueData),
+
+                /// ---------------- GRID ----------------
+                gridData: const FlGridData(show: false),
+
+                /// ---------------- BORDER ----------------
+                borderData: FlBorderData(show: false),
+
+                /// ---------------- TITLES ----------------
                 titlesData: FlTitlesData(
-                  show: true,
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
                   topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 40,
-                      interval: 10,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        if (value.toInt() >= 0 &&
-                            value.toInt() < revenueData.length) {
+                      reservedSize: 32,
+                      interval: 5,
+                      getTitlesWidget: (value, meta) {
+                        final index = value.toInt();
+                        if (index >= 0 && index < revenueData.length) {
                           return SideTitleWidget(
                             meta: meta,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                _formatDateForDisplay(
-                                  revenueData[value.toInt()].date,
-                                  state.period,
-                                ),
-                                style: const TextStyle(fontSize: 12),
+                            space: 8,
+                            child: Text(
+                              _formatDateForDisplay(
+                                revenueData[index].date,
+                                state.period,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey,
                               ),
                             ),
                           );
@@ -310,167 +348,219 @@ class _RevenueChartCardContentweb extends StatelessWidget {
                       },
                     ),
                   ),
+
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      reservedSize: 50,
                       interval: _calculateInterval(
                         state.summary?.totalRevenue ?? 0,
                       ),
-                      reservedSize: 60,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return SideTitleWidget(
-                          meta: meta,
-                          child: Text(
-                            _formatCurrency(value),
-                            style: const TextStyle(fontSize: 12),
+                      getTitlesWidget: (value, meta) {
+                        return Text(
+                          _formatCurrency(value),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey,
                           ),
                         );
                       },
                     ),
                   ),
                 ),
-                borderData: FlBorderData(
-                  show: true,
-                  border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                ),
-                minX: 0,
-                maxX: maxX,
-                minY: 0,
-                maxY: _calculateMaxY(revenueData),
+
+                /// ---------------- LINE ----------------
                 lineBarsData: [
                   LineChartBarData(
-                    spots: revenueData
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) =>
-                              FlSpot(entry.key.toDouble(), entry.value.revenue),
-                        )
-                        .toList(),
+                    spots: _buildRevenueSpots(revenueData),
                     isCurved: true,
-                    preventCurveOverShooting: true,
-                    gradient: LinearGradient(
-                      colors: [
-                        Theme.of(context).colorScheme.primary,
-                        Theme.of(context).colorScheme.primary.withOpacity(0.7),
-                      ],
-                    ),
-                    barWidth: 3,
+                    curveSmoothness: 0.2,
+                    barWidth: 2.5,
                     isStrokeCapRound: true,
-                    dotData: FlDotData(
-                      show: true,
-                      getDotPainter: (spot, percent, barData, index) =>
-                          FlDotCirclePainter(
-                            radius: 4,
-                            color: Theme.of(context).colorScheme.primary,
-                            strokeWidth: 2,
-                            strokeColor: Colors.white,
-                          ),
-                    ),
+                    color: Theme.of(context).colorScheme.primary,
+
+                    dotData: const FlDotData(show: false),
+
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                         colors: [
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withOpacity(0.3),
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withOpacity(0.1),
+                          ).colorScheme.primary.withOpacity(0.4),
+                          Colors.transparent,
                         ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
                 ],
+
+                /// ---------------- TOUCH ----------------
                 lineTouchData: LineTouchData(
-                  enabled: true,
+                  handleBuiltInTouches: true,
                   touchTooltipData: LineTouchTooltipData(
-                    getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
-                      return touchedBarSpots
-                          .map((barSpot) {
-                            final flSpot = barSpot;
-                            final dataIndex = flSpot.x.toInt();
-                            if (dataIndex >= 0 &&
-                                dataIndex < revenueData.length) {
-                              final data = revenueData[dataIndex];
-                              return LineTooltipItem(
-                                '${_formatDateForDisplay(data.date, state.period)}\n\$${data.revenue.toStringAsFixed(0)}\n${data.orders} orders',
-                                const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            }
-                            return null;
-                          })
-                          .where((item) => item != null)
-                          .toList()
-                          .cast<LineTooltipItem>();
+                    getTooltipItems: (spots) {
+                      return spots.map((spot) {
+                        final index = spot.x.toInt();
+                        final data = revenueData[index];
+                        return LineTooltipItem(
+                          '${_formatDateForDisplay(data.date, state.period)}\n'
+                          '\$${data.revenue.toStringAsFixed(0)}\n'
+                          '${data.orders} orders',
+                          const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        );
+                      }).toList();
                     },
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: 3.w),
-        if (state.summary != null)
-          _buildStatsweb(state.summary!, true, context),
-        const QuickActionsSectionweb(),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildStatsweb(
+  List<FlSpot> _buildRevenueSpots(List<RevenueData> data) {
+    return data
+        .asMap()
+        .entries
+        .map((entry) => FlSpot(entry.key.toDouble(), entry.value.revenue))
+        .toList();
+  }
+
+  Widget _buildStatsWeb(
     RevenueSummary summary,
     bool isDesktop,
     BuildContext context,
   ) {
-    final screenheight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Card(
-      elevation: 3,
-      color: ColoRs.whiteColor,
-      child: Container(
-        width: screenWidth * 0.10,
-        padding: const EdgeInsets.all(9),
-        decoration: BoxDecoration(
-          border: Border.all(color: ColoRs.fieldcolor),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: _buildStatItemweb(
-                'Total Revenue',
-                _formatCurrency(summary.totalRevenue),
-                '${summary.revenueChange.toStringAsFixed(1)}%',
-                summary.revenueChange >= 0,
-              ),
-            ),
-            Expanded(
-              child: _buildStatItemweb(
-                'Avg. Order',
-                _formatCurrency(summary.averageOrderValue),
-                '${summary.aovChange.toStringAsFixed(1)}%',
-                summary.aovChange >= 0,
-              ),
-            ),
-            Expanded(
-              child: _buildStatItemweb(
-                'Conversion',
-                '${summary.conversionRate.toStringAsFixed(1)}%',
-                '${summary.conversionChange.toStringAsFixed(1)}%',
-                summary.conversionChange >= 0,
-              ),
-            ),
-          ],
-        ),
+    final theme = Theme.of(context);
+
+    return Container(
+      width: 260, // stable width (desktop friendly)
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.4)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
+      child: Column(
+        children: [
+          _statTile(
+            context,
+            icon: Icons.payments_outlined,
+            title: 'Total Revenue',
+            value: _formatCurrency(summary.totalRevenue),
+            change: summary.revenueChange,
+          ),
+          const SizedBox(height: 16),
+          _statTile(
+            context,
+            icon: Icons.shopping_cart_outlined,
+            title: 'Avg. Order',
+            value: _formatCurrency(summary.averageOrderValue),
+            change: summary.aovChange,
+          ),
+          const SizedBox(height: 16),
+          _statTile(
+            context,
+            icon: Icons.trending_up_outlined,
+            title: 'Conversion',
+            value: '${summary.conversionRate.toStringAsFixed(1)}%',
+            change: summary.conversionChange,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _statTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String value,
+    required double change,
+  }) {
+    final theme = Theme.of(context);
+    final isPositive = change >= 0;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// Icon Container
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, size: 22, color: theme.colorScheme.primary),
+        ),
+
+        const SizedBox(width: 12),
+
+        /// Text Content
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    isPositive
+                        ? Icons.arrow_upward_rounded
+                        : Icons.arrow_downward_rounded,
+                    size: 16,
+                    color: isPositive ? Colors.green : Colors.red,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${change.toStringAsFixed(1)}%',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: isPositive ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'vs last period',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

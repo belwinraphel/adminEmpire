@@ -6,6 +6,7 @@ import 'package:empire/feature/product/presentation/bloc/add_product.dart';
 import 'package:empire/feature/product/presentation/views/add_product.dart/widgets.dart';
 import 'package:empire/feature/product/presentation/views/editpage/edit_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,6 +53,7 @@ class ProductDetailsPage extends StatelessWidget {
                             context,
                             product!,
                             mainCategoryId,
+                            constraints,
                             subcategory,
                             isDesktop,
                           ),
@@ -121,6 +123,7 @@ class ProductDetailsPage extends StatelessWidget {
     BuildContext context,
     ProductEntity product,
     String? mainCategoryId,
+    BoxConstraints constraints,
     String? subcategory,
     bool isDesktop,
   ) {
@@ -154,25 +157,8 @@ class ProductDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-           
             const SizedBox(height: 16),
 
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: _buildDetailRow(
-            //         'Price',
-            //         '\$${product.price.toStringAsFixed(2)}',
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: _buildDetailRow(
-            //         'Tax Rate',
-            //         '${product.taxRate.toStringAsFixed(1)}%',
-            //       ),
-            //     ),
-            //   ],
-            // ),
             const SizedBox(height: 16),
 
             _buildDetailRow('Filter Tag', product.filterTags.join(', ')),
@@ -233,102 +219,114 @@ class ProductDetailsPage extends StatelessWidget {
               _buildVariantsSection(product.variantDetails),
             ],
             const SizedBox20(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Delete Product'),
-                          content: const Text(
-                            'Are you sure you want to delete this product?',
+            Container(
+              padding: EdgeInsetsGeometry.only(
+                left: isDesktop ? constraints.maxWidth * 0.20 : 0,
+                right: isDesktop ? constraints.maxWidth * 0.20 : 0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 50,
+
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.read<ProductBloc>().add(
-                                  DeleteProductEvent(
-                                    mainCategoryId!,
-                                    subcategory!,
-                                    product.productDocId!,
-                                  ),
-                                );
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                'Delete',
-                                style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Delete Product'),
+                              content: const Text(
+                                'Are you sure you want to delete this product?',
                               ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.read<ProductBloc>().add(
+                                      DeleteProductEvent(
+                                        mainCategoryId!,
+                                        subcategory!,
+                                        product.productDocId!,
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          );
+                        },
+                        label: const Text(
+                          'Delete',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: Fonts.raleway,
+                          ),
                         ),
-                      );
-                    },
-                    label: const Text(
-                      'Delete',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: Fonts.raleway,
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return EditProdutsPage(
-                              mainCategoryId: mainCategoryId!,
-                              subcategoryId: subcategory,
-                              mainCategoryName: mainCategoryName,
-                              subcategoryName: subcategoryName,
-                              product: product,
-                              productId: product.productDocId,
-                            );
-                          },
+                  Expanded(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 50,
+
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
                         ),
-                      );
-                    },
-                    label: const Text(
-                      'Edit',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: Fonts.raleway,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return EditProdutsPage(
+                                  mainCategoryId: mainCategoryId!,
+                                  subcategoryId: subcategory,
+                                  mainCategoryName: mainCategoryName,
+                                  subcategoryName: subcategoryName,
+                                  product: product,
+                                  productId: product.productDocId,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        label: const Text(
+                          'Edit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: Fonts.raleway,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

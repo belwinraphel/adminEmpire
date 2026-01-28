@@ -1,10 +1,8 @@
 import 'dart:io';
- 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:empire/core/utilis/failure.dart';
 import 'package:empire/core/utilis/widgets.dart';
-
 import 'package:empire/feature/product/domain/enities/listproducts.dart';
 import 'package:empire/feature/product/domain/enities/product_entities.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +29,6 @@ abstract class ProductDataSource {
     String mainCategory,
     String subCargeoy,
     Brand brand,
-  
   );
 
   Future<Either<Failures, List<Brand>>> getBrands(
@@ -66,7 +63,7 @@ class ProductDataSourceImpli extends ProductDataSource {
         String? imgUrl;
 
         if (kIsWeb) {
-          final Uint8List imgBytes = product.imagesweb![i];
+          final Uint8List imgBytes = product.images[i];
           imgUrl = await uploadImageToCloudinary(bytes: imgBytes);
         } else {
           // product.images[i] must be file path
@@ -83,15 +80,19 @@ class ProductDataSourceImpli extends ProductDataSource {
         return Left(Exception("Image upload failed: $e"));
       }
     }
+    // ----------------------------------------
+    // UPLOAD VARIANT IMAGES
+    // ----------------------------------------
 
     for (var variant in product.variantDetails) {
       String? uploadedVariantImageUrl;
 
-      if (variant.image != null) {
+      if (variant.imageweb != null) {
         try {
           if (kIsWeb) {
+            final Uint8List imgBytes = variant.imageweb!;
             uploadedVariantImageUrl = await uploadImageToCloudinary(
-              bytes: variant.imageweb,
+              bytes: imgBytes,
             );
           } else {
             final file = File(variant.image!);
@@ -101,7 +102,7 @@ class ProductDataSourceImpli extends ProductDataSource {
           return Left(Exception("Variant image upload failed: $e"));
         }
       }
-
+      logger.f(uploadedVariantImageUrl);
       uploadedVariantDetails.add({
         'name': variant.name,
         'image': uploadedVariantImageUrl,
@@ -111,7 +112,6 @@ class ProductDataSourceImpli extends ProductDataSource {
       });
     }
 
-   
     try {
       await _firestore.collection('products').doc().set({
         'mainCategoryId': product.mainCategoryId,
@@ -128,7 +128,7 @@ class ProductDataSourceImpli extends ProductDataSource {
         'length': product.length,
         'width': product.width,
         'height': product.height,
-      
+
         'images': uploadedImageUrls,
         'brand': product.brand,
         'filterTags': product.filterTags,
@@ -182,12 +182,9 @@ class ProductDataSourceImpli extends ProductDataSource {
     String mainCategory,
     String subCargeoy,
     Brand brand,
-   
   ) async {
     final String? image;
     try {
-      
-  
       //  WEB ------------------------
       if (kIsWeb) {
         if (brand.imageweburl == null) {
@@ -195,7 +192,9 @@ class ProductDataSourceImpli extends ProductDataSource {
         }
 
         try {
-          image = await uploadImageToCloudinary(bytes: brand.imageweburl);
+          final Uint8List imgBytes = brand.imageweburl;
+
+          image = await uploadImageToCloudinary(bytes: imgBytes);
         } catch (e) {
           return left(Failures.network('Failed to upload image: $e'));
         }
@@ -262,7 +261,7 @@ class ProductDataSourceImpli extends ProductDataSource {
 
           brand: data['brand'] ?? "No Brand",
           category: data['category'] ?? '',
-         
+
           images: List<String>.from(data['images'] ?? []),
 
           filterTags: List<String>.from(data['filterTags'] ?? []),

@@ -5,14 +5,15 @@ import 'package:empire/feature/auth/presentation/bloc/login_bloc.dart';
 import 'package:empire/feature/auth/presentation/widget/widget.dart';
 
 import 'package:empire/feature/homepage/presentation/view/home_page.dart';
+import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Loginpage extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final usernamecController = TextEditingController();
-  final passwordController = TextEditingController();
+  final usernamecController = TextEditingController(text: 'Admin@gmail.com');
+  final passwordController = TextEditingController(text: 'admin@123');
   bool isremberme = false;
 
   Loginpage({super.key});
@@ -81,7 +82,7 @@ class Loginpage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const HomePage();
+                                    return DashBoard();
                                   },
                                 ),
                               );

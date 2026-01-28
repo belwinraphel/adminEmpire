@@ -1,4 +1,4 @@
-import 'dart:io';
+ 
 
 import 'package:empire/core/di/service_locator.dart';
 import 'package:empire/core/utilis/app_theme.dart';
@@ -9,7 +9,7 @@ import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dar
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 import 'package:empire/feature/auth/presentation/bloc/profile_image_bloc.dart';
 
-import 'package:empire/feature/auth/presentation/view/login_page.dart';
+ 
 import 'package:empire/feature/category/domain/usecase/categories/adding_category_usecase.dart';
 
 import 'package:empire/feature/category/domain/usecase/categories/get_category_usecase.dart';
@@ -26,7 +26,8 @@ import 'package:empire/feature/category/presentation/views/categories/category_p
 import 'package:empire/feature/category/presentation/views/splashScreen/starting_page.dart';
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
 
-import 'package:empire/feature/homepage/presentation/view/home_page.dart';
+ 
+import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 import 'package:empire/feature/order/presentation/view/order_page.dart';
 import 'package:empire/feature/product/data/datasource/add_product_data_source_impli.dart';
 
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<ImageAuth>(
           create: (_) => ImageAuth(
             pickImageFromCameraUsecaseUseCase: sl<PickImageFromCameraUsecase>(),
-            pickImageFromGalleryusecaseUseCase: sl<PickImageFromGalleryusecase>(),
+            pickImageFromGalleryusecaseUseCase:
+                sl<PickImageFromGalleryusecase>(),
           ),
         ),
 
@@ -98,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           child: BlocBuilder<AuthBlocStatus, LoginStatusState>(
             builder: (context, state) {
               if (state is SucessLoginStatusState) {
-                return const HomePage();
+                return DashBoard();
               } else if (state is NotLoginState) {
                 return const StartingScreen();
               } else {

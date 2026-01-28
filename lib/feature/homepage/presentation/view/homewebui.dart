@@ -1,5 +1,5 @@
 import 'package:empire/core/utilis/app_theme.dart';
-import 'package:empire/core/utilis/color.dart';
+
 import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
 
 import 'package:empire/feature/homepage/presentation/view/widgets/revenvue_web.dart';
@@ -26,25 +26,15 @@ class _HomewebuiState extends State<Homewebui> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          color: Colors.amberAccent,
-          width: widget.constraints.maxWidth * 0.10,
-        ),
-        // Container(child: _buildNavigationRail(isDesktop: true)),
-        SizedBox(
-          width: widget.constraints.maxWidth * 0.70,
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MetricsCards(isDesktop: true),
-              SizedBox(width: 10),
-              RevenueChartCardweb(),
-            ],
-          ),
-        ),
-      ],
+    return const SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MetricsCards(isDesktop: true),
+          SizedBox(width: 10),
+          RevenueChartCardweb(),
+        ],
+      ),
     );
   }
 

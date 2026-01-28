@@ -7,7 +7,7 @@ class Brand extends Equatable {
   final bool isActive;
 
   const Brand({
-    required this.imageUrl,
+      this.imageUrl,
     required this.label,
     this.imageweburl,
     this.isActive = false,
