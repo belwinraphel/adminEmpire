@@ -22,15 +22,15 @@ class HomeAppBar extends StatelessWidget {
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
 
-      flexibleSpace: Container(color: AppTheme.lightTheme.cardColor),
+      flexibleSpace: Container(color: AppTheme.darkTheme.cardColor),
       title: Row(
         children: [
           CircleAvatar(
             radius: 5.w,
-            backgroundColor: AppTheme.lightTheme.colorScheme.primary,
+            backgroundColor: AppTheme.darkTheme.colorScheme.primary,
             child: Text(
               'A',
-              style: AppTheme.lightTheme.textTheme.titleMedium?.copyWith(
+              style: AppTheme.darkTheme.textTheme.titleMedium?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
@@ -43,14 +43,14 @@ class HomeAppBar extends StatelessWidget {
               children: [
                 Text(
                   'Admin Dashboard',
-                  style: AppTheme.lightTheme.textTheme.titleMedium?.copyWith(
+                  style: AppTheme.darkTheme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
                   'Welcome back, Administrator',
-                  style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                    color: AppTheme.textSecondaryLight,
+                  style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                    // color: AppTheme.textSecondaryDark,
                   ),
                 ),
               ],
@@ -107,7 +107,7 @@ class HomeAppBar extends StatelessWidget {
       //                   ? 'radio_button_checked'
       //                   : 'radio_button_unchecked',
       //               color: selectedDateRange == range
-      //                   ? AppTheme.lightTheme.colorScheme.primary
+      //                   ? AppTheme.darkTheme.colorScheme.primary
       //                   : AppTheme.textSecondaryLight,
       //               size: 20,
       //             ),
@@ -171,13 +171,13 @@ class BuildLoadingSliverBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: AppTheme.lightTheme.colorScheme.primary,
+              color: AppTheme.darkTheme.colorScheme.primary,
             ),
             SizedBox(height: 2.h),
             Text(
               'Loading dashboard data...',
-              style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                color: AppTheme.textSecondaryLight,
+              style: AppTheme.darkTheme.textTheme.bodyMedium?.copyWith(
+                // color: AppTheme.textSecondaryLight,
               ),
             ),
           ],
@@ -266,7 +266,7 @@ void _showNotificationsDialog() {
   //                 ),
   //                 title: Text(
   //                   notification["title"] as String,
-  //                   style: AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
+  //                   style: AppTheme.darkTheme.textTheme.titleSmall?.copyWith(
   //                     fontWeight: isRead ? FontWeight.w400 : FontWeight.w600,
   //                   ),
   //                 ),
@@ -275,12 +275,12 @@ void _showNotificationsDialog() {
   //                   children: [
   //                     Text(
   //                       notification["message"] as String,
-  //                       style: AppTheme.lightTheme.textTheme.bodySmall,
+  //                       style: AppTheme.darkTheme.textTheme.bodySmall,
   //                     ),
   //                     SizedBox(height: 0.5.h),
   //                     Text(
   //                       notification["time"] as String,
-  //                       style: AppTheme.lightTheme.textTheme.bodySmall
+  //                       style: AppTheme.darkTheme.textTheme.bodySmall
   //                           ?.copyWith(color: AppTheme.textSecondaryLight),
   //                     ),
   //                   ],
@@ -291,7 +291,7 @@ void _showNotificationsDialog() {
   //                         width: 8,
   //                         height: 8,
   //                         decoration: BoxDecoration(
-  //                           color: AppTheme.lightTheme.colorScheme.primary,
+  //                           color: AppTheme.darkTheme.colorScheme.primary,
   //                           shape: BoxShape.circle,
   //                         ),
   //                       ),
@@ -313,13 +313,13 @@ void _showNotificationsDialog() {
   Color _getNotificationColor(String type) {
     switch (type) {
       case 'warning':
-        return AppTheme.warningLight;
+         return AppTheme.darkTheme.colorScheme.secondary;
       case 'success':
-        return AppTheme.successLight;
+        return AppTheme.darkTheme.colorScheme.secondary;
       case 'error':
-        return AppTheme.errorLight;
+          return AppTheme.darkTheme.colorScheme.secondary;
       default:
-        return AppTheme.lightTheme.colorScheme.primary;
+        return AppTheme.darkTheme.colorScheme.primary;
     }
   }
 
@@ -366,7 +366,7 @@ class BottomBar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
         decoration: BoxDecoration(
           color: isActive
-              ? AppTheme.lightTheme.colorScheme.primary.withValues(alpha: 0.1)
+              ? AppTheme.darkTheme.colorScheme.primary.withValues(alpha: 0.1)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
@@ -376,17 +376,17 @@ class BottomBar extends StatelessWidget {
             CustomIconWidget(
               iconName: iconName,
               color: isActive
-                  ? AppTheme.lightTheme.colorScheme.primary
-                  : AppTheme.textSecondaryLight,
+                  ? AppTheme.darkTheme.colorScheme.primary
+                  : AppTheme.darkTheme.iconTheme.color,
               size: 24,
             ),
             SizedBox(height: 0.5.h),
             Text(
               label,
-              style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
+              style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
                 color: isActive
-                    ? AppTheme.lightTheme.colorScheme.primary
-                    : AppTheme.textSecondaryLight,
+                    ? AppTheme.darkTheme.colorScheme.primary
+                    : AppTheme.darkTheme.textTheme.bodySmall?.color ?? Colors.white,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
               ),
             ),
@@ -406,10 +406,10 @@ class BottomNavigationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.lightTheme.cardColor,
-        boxShadow: const [
+        color: AppTheme.darkTheme.cardColor,
+        boxShadow:   [
           BoxShadow(
-            color: AppTheme.shadowLight,
+            color: AppTheme.darkTheme.cardColor,
             blurRadius: 8,
             offset: Offset(0, -2),
           ),

@@ -1,75 +1,68 @@
-import 'package:empire/feature/dashboard/presentation/bloc/dashboard_bloc.dart';
-import 'package:empire/feature/dashboard/presentation/bloc/dashboard_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/dashboard_bloc.dart';
+import '../bloc/dashboard_state.dart';
 
 class AddProductView extends StatelessWidget {
   const AddProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocBuilder<DashboardBloc, DashboardState>(
-        builder: (context, state) {
-          final isDark = state is DashboardLoaded;
-          final backgroundColor = isDark
-              ? const Color(0xFF1E1E24)
-              : const Color(0xFFF5F5FA);
-          final textColor = isDark
-              ? Colors.white
-              : const Color.fromRGBO(163, 122, 122, 1);
-          final subTextColor = isDark ? Colors.white70 : Colors.grey;
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, state) {
+        final isDark =
+            state is DashboardLoaded && state.themeMode == ThemeMode.dark;
+        final backgroundColor = isDark
+            ? const Color(0xFF1E1E24)
+            : const Color(0xFFF5F5FA);
+        final textColor = isDark ? Colors.white : const Color(0xFF2C2C2C);
+        final subTextColor = isDark ? Colors.white70 : Colors.grey;
 
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final isDesktop = constraints.maxWidth >= 900;
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isDesktop = constraints.maxWidth >= 900;
 
-              if (!isDesktop) {
-                // Mobile/Tablet Layout (Column)
-                return SingleChildScrollView(
-                  child: Container(
-                    color: backgroundColor,
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        _buildLeftPanel(textColor, subTextColor, isDark),
-                        const SizedBox(height: 32),
-                        _buildRightPanel(textColor, subTextColor, isDark),
-                      ],
-                    ),
+            if (!isDesktop) {
+              // Mobile/Tablet Layout (Column)
+              return SingleChildScrollView(
+                child: Container(
+                  color: backgroundColor,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _buildLeftPanel(textColor, subTextColor, isDark),
+                      const SizedBox(height: 32),
+                      _buildRightPanel(textColor, subTextColor, isDark),
+                    ],
                   ),
-                );
-              }
-
-              // Desktop Layout (Row)
-              return Container(
-                color: backgroundColor,
-                padding: const EdgeInsets.all(32.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: _buildLeftPanel(textColor, subTextColor, isDark),
-                    ),
-                    const SizedBox(width: 48),
-                    Expanded(
-                      flex: 5,
-                      child: SingleChildScrollView(
-                        child: _buildRightPanel(
-                          textColor,
-                          subTextColor,
-                          isDark,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               );
-            },
-          );
-        },
-      ),
+            }
+
+            // Desktop Layout (Row)
+            return Container(
+              color: backgroundColor,
+              padding: const EdgeInsets.all(32.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: _buildLeftPanel(textColor, subTextColor, isDark),
+                  ),
+                  const SizedBox(width: 48),
+                  Expanded(
+                    flex: 5,
+                    child: SingleChildScrollView(
+                      child: _buildRightPanel(textColor, subTextColor, isDark),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 

@@ -1,10 +1,8 @@
 import 'package:empire/core/extension/responsive.dart';
 import 'package:empire/core/utils/app_theme.dart';
- 
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
 import 'package:empire/feature/homepage/presentation/view/homewebui.dart';
 import 'package:empire/feature/homepage/presentation/view/widget.dart';
- 
 import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/quick_actions_section.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/revenue_chart_card.dart';
@@ -15,7 +13,7 @@ import 'package:sizer/sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-  @override
+  @override 
   State<HomePage> createState() => _HomePageState();
 }
 
@@ -42,12 +40,12 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppTheme.lightTheme.scaffoldBackgroundColor,
+      backgroundColor: AppTheme.darkTheme.scaffoldBackgroundColor,
       body: SafeArea(
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
-          color: AppTheme.lightTheme.colorScheme.primary,
+          color: AppTheme.darkTheme.colorScheme.primary,
           child: const _HomeMobileLayout(),
         ),
       ),
@@ -62,7 +60,7 @@ class _HomeMobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = Responsive.isMobile(context) ? 2.w : 4.w;
-    
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(padding),
@@ -75,7 +73,7 @@ class _HomeMobileLayout extends StatelessWidget {
             const RevenueChartCard(),
             SizedBox(height: 2.h),
             const QuickActionsSection(),
-            SizedBox(height: 2.h), 
+            SizedBox(height: 2.h),
           ],
         ),
       ),

@@ -1,9 +1,8 @@
-import 'package:empire/core/utils/app_theme.dart';
-
 import 'package:empire/feature/homepage/presentation/view/widgets/metrics_cards.dart';
-
+import 'package:empire/feature/homepage/presentation/view/widgets/quick_section_web.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/revenvue_web.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class Homewebui extends StatefulWidget {
   final BoxConstraints constraints;
@@ -14,89 +13,43 @@ class Homewebui extends StatefulWidget {
 }
 
 class _HomewebuiState extends State<Homewebui> {
-  int _selectedIndex = 0;
-  final List<_NavItem> _navItems = [
-    _NavItem(label: 'Dashboard', icon: 'dashboard', route: '/admin-dashboard'),
-    _NavItem(
-      label: 'Products',
-      icon: 'inventory',
-      route: '/admin-product-management',
-    ),
-    _NavItem(label: 'Orders', icon: 'list_alt', route: '/order-history'),
-  ];
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MetricsCards(isDesktop: true),
-          SizedBox(width: 10),
-          RevenueChartCardweb(),
+          const MetricsCards(isDesktop: true),
+          SizedBox(height: 2.h),
+          _buildDashboardContent(context),
         ],
       ),
     );
   }
 
-  Widget _buildNavigationRail({required bool isDesktop}) {
-    return Container(
-      height: 600,
-      width: isDesktop ? 240 : 72,
-      color: AppTheme.lightTheme.cardColor,
-      child: NavigationRail(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() => _selectedIndex = index);
-          final route = _navItems[index].route;
-          // context.go(route); // or Navigator.pushNamed, GoRouter recommended
-        },
-        labelType: isDesktop
-            ? NavigationRailLabelType
-                  .none // Shows labels next to icons when extended
-            : NavigationRailLabelType.selected,
-        extended: isDesktop, // Shows labels on large screens
-        backgroundColor: AppTheme.lightTheme.cardColor,
-        selectedIconTheme: IconThemeData(
-          color: AppTheme.lightTheme.colorScheme.primary,
-        ),
-        unselectedIconTheme: IconThemeData(color: Colors.grey.shade600),
-        selectedLabelTextStyle: TextStyle(
-          color: AppTheme.lightTheme.colorScheme.primary,
-          fontWeight: FontWeight.bold,
-        ),
-        destinations: _navItems
-            .map(
-              (item) => NavigationRailDestination(
-                icon: Icon(_getIconData(item.icon)),
-                selectedIcon: Icon(
-                  _getIconData(item.icon),
-                  color: AppTheme.lightTheme.colorScheme.primary,
-                ),
-                label: Text(item.label),
-              ),
-            )
-            .toList(),
-      ),
+  Widget _buildDashboardContent(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        if (screenWidth < 1400) {
+          return const Column(
+            children: [
+              RevenueChartCardweb(),
+              SizedBox(height: 20),
+              QuickActionsSectionweb(),
+            ],
+          );
+        } else {
+          return const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 3, child: RevenueChartCardweb()),
+              SizedBox(width: 20),
+            ],
+          );
+        }
+      },
     );
-  }
-}
-
-class _NavItem {
-  final String label;
-  final String icon;
-  final String route;
-  _NavItem({required this.label, required this.icon, required this.route});
-}
-
-IconData _getIconData(String name) {
-  switch (name) {
-    case 'dashboard':
-      return Icons.dashboard;
-    case 'inventory':
-      return Icons.inventory_2;
-    case 'list_alt':
-      return Icons.list_alt;
-    default:
-      return Icons.circle;
   }
 }

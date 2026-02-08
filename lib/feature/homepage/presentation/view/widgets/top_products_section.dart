@@ -78,7 +78,7 @@ class TopProductsSection extends StatelessWidget {
             children: [
               Text(
                 'Top Products',
-                style: AppTheme.lightTheme.textTheme.titleLarge?.copyWith(
+                style: AppTheme.darkTheme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -88,8 +88,8 @@ class TopProductsSection extends StatelessWidget {
                 },
                 child: Text(
                   'View All',
-                  style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.lightTheme.colorScheme.primary,
+                  style: AppTheme.darkTheme.textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.darkTheme.colorScheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -130,7 +130,7 @@ class TopProductsSection extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: AppTheme.lightTheme.colorScheme.surface,
+                    color: AppTheme.darkTheme.colorScheme.surface,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
@@ -151,7 +151,7 @@ class TopProductsSection extends StatelessWidget {
                   children: [
                     Text(
                       product["name"] as String,
-                      style: AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                      style: AppTheme.darkTheme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                       maxLines: 2,
@@ -160,22 +160,22 @@ class TopProductsSection extends StatelessWidget {
                     SizedBox(height: 1.h),
                     Row(
                       children: [
-                        const CustomIconWidget(
+                          CustomIconWidget(
                           iconName: 'star',
-                          color: AppTheme.warningLight,
+                          color: AppTheme.darkTheme.colorScheme.primary,
                           size: 14,
                         ),
                         SizedBox(width: 1.w),
                         Text(
                           '${product["rating"]}',
-                          style: AppTheme.lightTheme.textTheme.bodySmall
+                          style: AppTheme.darkTheme.textTheme.bodySmall
                               ?.copyWith(fontWeight: FontWeight.w500),
                         ),
                         SizedBox(width: 2.w),
                         Text(
                           '${product["sales"]} sold',
-                          style: AppTheme.lightTheme.textTheme.bodySmall
-                              ?.copyWith(color: AppTheme.textSecondaryLight),
+                          style: AppTheme.darkTheme.textTheme.bodySmall
+                              ?.copyWith(color: AppTheme.darkTheme.textTheme.bodySmall?.color),
                         ),
                       ],
                     ),
@@ -185,9 +185,9 @@ class TopProductsSection extends StatelessWidget {
                       children: [
                         Text(
                           product["revenue"] as String,
-                          style: AppTheme.lightTheme.textTheme.titleSmall
+                          style: AppTheme.darkTheme.textTheme.titleSmall
                               ?.copyWith(
-                                color: AppTheme.lightTheme.colorScheme.primary,
+                                color: AppTheme.darkTheme.colorScheme.primary,
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
@@ -198,18 +198,18 @@ class TopProductsSection extends StatelessWidget {
                                   ? 'trending_up'
                                   : 'trending_down',
                               color: (product["isPositive"] as bool)
-                                  ? AppTheme.successLight
-                                  : AppTheme.errorLight,
+                                  ? AppTheme.darkTheme.colorScheme.primary
+                                  : AppTheme.darkTheme.colorScheme.error,
                               size: 14,
                             ),
                             SizedBox(width: 1.w),
                             Text(
                               product["trend"] as String,
-                              style: AppTheme.lightTheme.textTheme.bodySmall
+                              style: AppTheme.darkTheme.textTheme.bodySmall
                                   ?.copyWith(
                                     color: (product["isPositive"] as bool)
-                                        ? AppTheme.successLight
-                                        : AppTheme.errorLight,
+                                        ? AppTheme.darkTheme.colorScheme.primary
+                                        : AppTheme.darkTheme.colorScheme.error,
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),

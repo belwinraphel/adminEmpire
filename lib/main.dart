@@ -12,7 +12,7 @@ import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = AppBlocObserver(enableLogging: false);
+  Bloc.observer = AppBlocObserver(enableLogging: true);
   await Firebase.initializeApp(
     options: kIsWeb
         ? const FirebaseOptions(

@@ -19,14 +19,8 @@ class DashBoard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (Responsive.isDesktop(context))
-              Expanded(
-                flex: 3,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Menu(scaffoldKey: _scaffoldKey),
-                ),
-              ),
+            if (Responsive.isDesktop(context)) Menu(scaffoldKey: _scaffoldKey),
+
             const Expanded(flex: 8, child: HomePage()),
             if (!Responsive.isMobile(context))
               const Expanded(flex: 4, child: ReveneSummaryCard()),

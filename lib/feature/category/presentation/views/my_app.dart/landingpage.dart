@@ -1,5 +1,3 @@
- 
-
 import 'package:empire/core/di/service_locator.dart';
 import 'package:empire/core/utils/app_theme.dart';
 import 'package:empire/core/utils/constants.dart';
@@ -16,16 +14,16 @@ import 'package:empire/feature/category/presentation/bloc/category_bloc/get_cate
 import 'package:empire/feature/category/presentation/bloc/category_bloc/get_subcategory.dart';
 import 'package:empire/feature/category/presentation/views/categories/category_page.dart';
 import 'package:empire/feature/category/presentation/views/splashScreen/starting_page.dart';
+import 'package:empire/feature/dashboard/presentation/bloc/dashboard_bloc.dart';
+
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
 import 'package:empire/feature/homepage/presentation/view/widgets/dashBoard.dart';
 import 'package:empire/feature/order/presentation/view/order_page.dart';
 import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
-
 import 'package:empire/feature/product/data/repository/add_product_respository.dart';
 import 'package:empire/feature/product/domain/usecase/add_product_usecae.dart';
 import 'package:empire/feature/product/presentation/bloc/add_product.dart';
 import 'package:empire/feature/revenue/presentation/bloc/revenue_bloc.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,6 +39,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (_) => sl<DashboardBloc>()..add(DashboardStarted()),
+        ),
         BlocProvider<ImageAuth>(
           create: (_) => ImageAuth(
             pickImageFromCameraUsecaseUseCase: sl<PickImageFromCameraUsecase>(),
@@ -77,10 +78,10 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.darkTheme,
 
         routes: {
-          '/admin-product-management': (context) => const CategoryScreen(),
+          '/admin-product-management': (context) => const AddProductView(),
           '/order-history': (context) => const MyOrdersScreen(),
         },
         home: BlocProvider(

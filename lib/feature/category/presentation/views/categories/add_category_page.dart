@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:empire/core/di/service_locator.dart';
 import 'package:empire/core/utils/commonvalidator.dart';
 import 'package:empire/core/utils/fonts.dart';
@@ -20,12 +18,8 @@ import 'package:sizer/sizer.dart';
 
 class AddCategory extends StatelessWidget {
   AddCategory({super.key});
-  TextEditingController category = TextEditingController(
-    text: '',
-  );
-  TextEditingController description = TextEditingController(
-    text: '',
-  );
+  TextEditingController category = TextEditingController();
+  TextEditingController description = TextEditingController();
   final GlobalKey<FormState> categorykey = GlobalKey<FormState>();
 
   dynamic images;
@@ -53,7 +47,7 @@ class AddCategory extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return const CategoryScreen();
+                              return const AddProductView();
                             },
                           ),
                           (route) => false,

@@ -71,7 +71,7 @@ class LowStockAlerts extends StatelessWidget {
                 children: [
                   Text(
                     'Low Stock Alerts',
-                    style: AppTheme.lightTheme.textTheme.titleLarge?.copyWith(
+                    style: AppTheme.darkTheme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -80,13 +80,13 @@ class LowStockAlerts extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
                     decoration: BoxDecoration(
-                      color: AppTheme.errorLight.withValues(alpha: 0.1),
+                      color: AppTheme.darkTheme.colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       '${lowStockItems.length}',
-                      style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                        color: AppTheme.errorLight,
+                      style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                        color: AppTheme.darkTheme.colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -99,8 +99,8 @@ class LowStockAlerts extends StatelessWidget {
                 },
                 child: Text(
                   'Manage',
-                  style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.lightTheme.colorScheme.primary,
+                  style: AppTheme.darkTheme.textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.darkTheme.colorScheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -138,7 +138,7 @@ class LowStockAlerts extends StatelessWidget {
               height: 15.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: AppTheme.lightTheme.colorScheme.surface,
+                color: AppTheme.darkTheme.colorScheme.surface,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
@@ -161,7 +161,7 @@ class LowStockAlerts extends StatelessWidget {
                       Expanded(
                         child: Text(
                           item["name"] as String,
-                          style: AppTheme.lightTheme.textTheme.titleSmall
+                          style: AppTheme.darkTheme.textTheme.titleSmall
                               ?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -179,7 +179,7 @@ class LowStockAlerts extends StatelessWidget {
                         child: Text(
                           urgency,
                           style:
-                              AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
+                              AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
                             color: urgencyColor,
                             fontWeight: FontWeight.w500,
                           ),
@@ -193,16 +193,16 @@ class LowStockAlerts extends StatelessWidget {
                       Text(
                         'SKU: ${item["sku"]}',
                         style:
-                            AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondaryLight,
+                            AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                          color: AppTheme. darkTheme.textTheme.bodySmall?.color,
                         ),
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         item["category"] as String,
                         style:
-                            AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondaryLight,
+                            AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                          color: AppTheme. darkTheme.textTheme.bodySmall?.color,
                         ),
                       ),
                     ],
@@ -216,14 +216,14 @@ class LowStockAlerts extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: 'Stock: ',
-                              style: AppTheme.lightTheme.textTheme.bodySmall
+                              style: AppTheme.darkTheme.textTheme.bodySmall
                                   ?.copyWith(
-                                color: AppTheme.textSecondaryLight,
+                                color: AppTheme. darkTheme.textTheme.bodySmall?.color,
                               ),
                             ),
                             TextSpan(
                               text: '${item["currentStock"]}',
-                              style: AppTheme.lightTheme.textTheme.bodySmall
+                              style: AppTheme.darkTheme.textTheme.bodySmall
                                   ?.copyWith(
                                 color: urgencyColor,
                                 fontWeight: FontWeight.w600,
@@ -231,9 +231,9 @@ class LowStockAlerts extends StatelessWidget {
                             ),
                             TextSpan(
                               text: ' / ${item["minStock"]}',
-                              style: AppTheme.lightTheme.textTheme.bodySmall
+                              style: AppTheme.darkTheme.textTheme.bodySmall
                                   ?.copyWith(
-                                color: AppTheme.textSecondaryLight,
+                                color: AppTheme. darkTheme.textTheme.bodySmall?.color,
                               ),
                             ),
                           ],
@@ -249,13 +249,13 @@ class LowStockAlerts extends StatelessWidget {
                             child: Container(
                               padding: EdgeInsets.all(1.5.w),
                               decoration: BoxDecoration(
-                                color: AppTheme.lightTheme.colorScheme.primary
+                                color: AppTheme.darkTheme.colorScheme.primary
                                     .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: CustomIconWidget(
                                 iconName: 'add',
-                                color: AppTheme.lightTheme.colorScheme.primary,
+                                color: AppTheme.darkTheme.colorScheme.primary,
                                 size: 16,
                               ),
                             ),
@@ -269,13 +269,13 @@ class LowStockAlerts extends StatelessWidget {
                             child: Container(
                               padding: EdgeInsets.all(1.5.w),
                               decoration: BoxDecoration(
-                                color: AppTheme.textSecondaryLight
+                                color: AppTheme. darkTheme.textTheme.bodySmall!.color!
                                     .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: CustomIconWidget(
                                 iconName: 'edit',
-                                color: AppTheme.textSecondaryLight,
+                                color: AppTheme. darkTheme.textTheme.bodySmall?.color,
                                 size: 16,
                               ),
                             ),
@@ -296,13 +296,13 @@ class LowStockAlerts extends StatelessWidget {
   Color _getUrgencyColor(String urgency) {
     switch (urgency.toLowerCase()) {
       case 'critical':
-        return AppTheme.errorLight;
+        return AppTheme.darkTheme.colorScheme.primary;
       case 'high':
-        return AppTheme.warningLight;
+        return AppTheme.darkTheme.colorScheme.primary;
       case 'medium':
-        return AppTheme.lightTheme.colorScheme.primary;
+        return AppTheme.darkTheme.colorScheme.primary;
       default:
-        return AppTheme.textSecondaryLight;
+        return AppTheme.darkTheme.colorScheme.primary;
     }
   }
 

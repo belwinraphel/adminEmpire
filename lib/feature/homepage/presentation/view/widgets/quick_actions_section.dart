@@ -36,7 +36,7 @@ class QuickActionsSection extends StatelessWidget {
         children: [
           Text(
             'Quick Actions',
-            style: AppTheme.lightTheme.textTheme.titleLarge?.copyWith(
+            style: AppTheme.darkTheme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -107,7 +107,7 @@ class QuickActionsSection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                    style: AppTheme.darkTheme.textTheme.titleSmall?.copyWith(
                       color: color,
                       fontWeight: FontWeight.w600,
                     ),

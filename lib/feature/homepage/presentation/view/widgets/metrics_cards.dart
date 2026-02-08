@@ -1,32 +1,25 @@
-import 'package:empire/core/extension/responsive.dart';
 import 'package:empire/feature/homepage/domain/entities/metric_entity.dart';
 import 'package:empire/feature/homepage/presentation/bloc/metric_bloc.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 class MetricsCards extends StatelessWidget {
-  final bool isDesktop;
-  final bool isTablet;
-
   const MetricsCards({
     super.key,
-    this.isDesktop = false,
-    this.isTablet = false,
+    // These flags are now optional/ignored as the widget is internally responsive
+    bool isDesktop = false,
+    bool isTablet = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return _MetricsCardsContent(isDesktop: isDesktop);
+    return const _MetricsCardsContent();
   }
 }
 
 class _MetricsCardsContent extends StatelessWidget {
-  final bool isDesktop;
-  final bool isTablet;
-
-  const _MetricsCardsContent({this.isDesktop = false, this.isTablet = false});
+  const _MetricsCardsContent();
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +27,9 @@ class _MetricsCardsContent extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            isDesktop
-                ? _buildMetricsGridweb(state, context)
-                : _buildMetricsGrid(state, context),
-            // isDesktop
-            //     ? _buildRealtimeToggleweb(context, state)
-            //     : _buildMetricsGrid(state, context),
-            // SizedBox(height: 2.h),
+            _buildMetricsGrid(state, context),
+            // Realtime toggle can be uncommented/re-enabled here if needed
+            // _buildRealtimeToggle(context, state),
           ],
         );
       },
@@ -48,22 +37,6 @@ class _MetricsCardsContent extends StatelessWidget {
   }
 
   Widget _buildRealtimeToggle(BuildContext context, MetricsState state) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text('Live Updates', style: Theme.of(context).textTheme.bodySmall),
-        SizedBox(width: 2.w),
-        Switch(
-          value: state.isRealTime,
-          onChanged: (value) {
-            context.read<MetricsBloc>().add(MetricsRealTimeToggled(value));
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRealtimeToggleweb(BuildContext context, MetricsState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -92,160 +65,169 @@ class _MetricsCardsContent extends StatelessWidget {
       builder: (context, constraints) {
         int crossAxisCount;
         double childAspectRatio;
+        double gridSpacing;
 
-        if (constraints.maxWidth >= 1100) {
+        if (constraints.maxWidth >= 1400) {
+          // Large screens
           crossAxisCount = 4;
-          childAspectRatio = 1.5;
-        } else if (constraints.maxWidth >= 650) {
+          childAspectRatio = 2.4; // Significantly increased (was 1.8)
+          gridSpacing = 20;
+        } else if (constraints.maxWidth >= 1100) {
+          // Desktop
+          crossAxisCount = 4;
+          childAspectRatio = 2.1; // Significantly increased (was 1.6)
+          gridSpacing = 16;
+        } else if (constraints.maxWidth >= 800) {
+          // Tablet
           crossAxisCount = 3;
-          childAspectRatio = 1.4;
-        } else {
+          childAspectRatio = 1.8; // Significantly increased (was 1.4)
+          gridSpacing = 16;
+        } else if (constraints.maxWidth >= 600) {
+          // Small Tablet / Large Phone
           crossAxisCount = 2;
+          childAspectRatio = 1.8; // Significantly increased (was 1.5)
+          gridSpacing = 12;
+        } else {
+          // Mobile
+          crossAxisCount = 2;
+          childAspectRatio = 1.5; // Significantly increased (was 1.3)
+          gridSpacing = 10;
+        }
+
+        // Adjust aspect ratio for very small screens if needed
+        if (constraints.maxWidth < 400) {
           childAspectRatio = 1.3;
         }
 
         return GridView.builder(
           shrinkWrap: true,
+          padding: EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: constraints.maxWidth < 600 ? 0 : 10,
+          ),
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 3.w,
-            mainAxisSpacing: 2.h,
+            crossAxisSpacing: gridSpacing,
+            mainAxisSpacing: gridSpacing,
             childAspectRatio: childAspectRatio,
           ),
           itemCount: state.metricsData.length,
           itemBuilder: (context, index) {
             final metric = state.metricsData[index];
-            return _buildMetricCard(metric: metric);
+            return _buildUnifiedMetricCard(context, metric);
           },
         );
       },
     );
   }
 
-  Widget _buildMetricsGridweb(MetricsState state, BuildContext context) {
-    if (state.isLoading) {
-      return _buildLoadingWebGrid();
-    } else if (state.error != null) {
-      return _buildErrorState(state.error!, context);
-    } else if (state.metricsData.isEmpty) {
-      return _buildEmptyState();
-    }
-
+  Widget _buildUnifiedMetricCard(BuildContext context, MetricsData metric) {
     final theme = Theme.of(context);
-    final isMobile = Responsive.isMobile(context);
-    final isDesktop = Responsive.isDesktop(context);
+    final accentColor = Color(metric.color);
 
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(20),
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: !isDesktop ? 2 : 4,
-        crossAxisSpacing: !isDesktop ? 12 : 20,
-        mainAxisSpacing: 20,
-        childAspectRatio: !isDesktop ? 1.2 : 120 / 100,
-      ),
-      itemCount: state.metricsData.length,
-      itemBuilder: (context, index) {
-        final metric = state.metricsData[index];
-        final accentColor = Color(metric.color);
-
-        return Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: theme.colorScheme.outline.withOpacity(0.35),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.04),
-                blurRadius: 14,
-                offset: const Offset(0, 8),
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.all(
+        16,
+      ), // Use fixed padding instead of sp for better control
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: theme.colorScheme.outline.withOpacity(0.35)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 8),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween, // Distribute space evenly
+        children: [
+          /// ───── HEADER (Title + Icon) ─────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              /// ───── HEADER (Title + Icon) ─────
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    metric.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      fontWeight: FontWeight.w500,
-                    ),
+              Expanded(
+                child: Text(
+                  metric.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    fontWeight: FontWeight.w500,
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: accentColor.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      _getIcon(metric.iconName),
-                      color: accentColor,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-
-              /// ───── VALUE ─────
-              Text(
-                metric.value,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: MediaQuery.of(context).size.width * 0.01,
-                  letterSpacing: -0.5,
                 ),
               ),
-
-              const Spacer(),
-
-              /// ───── CHANGE ─────
-              Wrap(
-                children: [
-                  Icon(
-                    metric.isPositive
-                        ? Icons.arrow_upward_rounded
-                        : Icons.arrow_downward_rounded,
-                    size: MediaQuery.of(context).size.width * 0.001,
-                    color: metric.isPositive ? Colors.green : Colors.red,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    metric.change,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: MediaQuery.of(context).size.width * 0.007,
-                      color: metric.isPositive ? Colors.green : Colors.red,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'vs last period',
-                    maxLines: 1,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: MediaQuery.of(context).size.width * 0.0089,
-                      overflow: TextOverflow.clip,
-
-                      color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    ),
-                  ),
-                ],
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.all(6), // Smaller padding
+                decoration: BoxDecoration(
+                  color: accentColor.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  _getIcon(metric.iconName),
+                  color: accentColor,
+                  size: 18, // Slightly smaller icon
+                ),
               ),
             ],
           ),
-        );
-      },
+
+          // No Spacer() here - let MainAxisAlignment handle it or use flexible if needed,
+          // but tighter control is better for short cards.
+
+          /// ───── VALUE ─────
+          FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: Text(
+              metric.value,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.5,
+                height: 1.1, // Tighter line height
+              ),
+            ),
+          ),
+
+          /// ───── CHANGE ─────
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Icon(
+                metric.isPositive
+                    ? Icons.arrow_upward_rounded
+                    : Icons.arrow_downward_rounded,
+                size: 14,
+                color: metric.isPositive ? Colors.green : Colors.red,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                metric.change,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: metric.isPositive ? Colors.green : Colors.red,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                'vs last period',
+                maxLines: 1,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  overflow: TextOverflow.clip,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  fontSize: 10,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -254,7 +236,7 @@ class _MetricsCardsContent extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: 2, // Default to 2 for loading shim
         crossAxisSpacing: 3.w,
         mainAxisSpacing: 2.h,
         childAspectRatio: 1.3,
@@ -266,20 +248,55 @@ class _MetricsCardsContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadingWebGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 3.w,
-        mainAxisSpacing: 2.h,
-        childAspectRatio: 1.9,
+  Widget _buildMetricCardShimmer() {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: EdgeInsets.all(4.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 18.w,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              width: 20.w,
+              height: 30,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            Container(
+              width: 30.w,
+              height: 15,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
       ),
-      itemCount: 4,
-      itemBuilder: (context, index) {
-        return _buildMetricWebCardShimmer();
-      },
     );
   }
 
@@ -340,253 +357,6 @@ class _MetricsCardsContent extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildMetricCardweb({required MetricsData metric}) {
-    return RepaintBoundary(
-      child: Card(
-        elevation: 2,
-        child: Padding(
-          padding: EdgeInsets.all(4.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      metric.title,
-                      style: TextStyle(fontSize: 15, color: Colors.grey[600]),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      color: Color(metric.color).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      _getIcon(metric.iconName),
-                      color: Color(metric.color),
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 90),
-              Text(
-                metric.value,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                ),
-              ),
-
-              Row(
-                children: [
-                  Text(
-                    metric.change,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: metric.isPositive ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(width: 1.w),
-                  Icon(
-                    metric.isPositive ? Icons.trending_up : Icons.trending_down,
-                    color: metric.isPositive ? Colors.green : Colors.red,
-                    size: 16,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMetricCard({required MetricsData metric}) {
-    return RepaintBoundary(
-      child: Card(
-        elevation: 2,
-        child: Padding(
-          padding: EdgeInsets.all(4.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      metric.title,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(2.w),
-                    decoration: BoxDecoration(
-                      color: Color(metric.color).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      _getIcon(metric.iconName),
-                      color: Color(metric.color),
-                      size: 20,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 1.h),
-              Text(
-                metric.value,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                ),
-              ),
-
-              Row(
-                children: [
-                  Text(
-                    metric.change,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: metric.isPositive ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(width: 1.w),
-                  Icon(
-                    metric.isPositive ? Icons.trending_up : Icons.trending_down,
-                    color: metric.isPositive ? Colors.green : Colors.red,
-                    size: 16,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMetricWebCardShimmer() {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 2.w, bottom: 3.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 10.w,
-                  height: 1.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(2.w),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.circle, color: Colors.grey[400], size: 20),
-                ),
-              ],
-            ),
-            Container(
-              width: 10.w,
-              height: 3.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            Container(
-              width: 10.w,
-              height: 2.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMetricCardShimmer() {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: EdgeInsets.all(4.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 18.w,
-                  height: 4.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(2.w),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.circle, color: Colors.grey[400], size: 20),
-                ),
-              ],
-            ),
-            Container(
-              width: 20.w,
-              height: 3.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            Container(
-              width: 30.w,
-              height: 2.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

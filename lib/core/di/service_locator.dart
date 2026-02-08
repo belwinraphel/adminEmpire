@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:empire/core/services/climate_service.dart';
+import 'package:empire/core/services/weather_service.dart';
 import 'package:empire/feature/auth/data/datasource/auth_repo.dart';
 import 'package:empire/feature/category/data/datasource/category_data_source.dart';
 import 'package:empire/feature/category/data/datasource/category_data_source_impl.dart';
@@ -9,6 +11,13 @@ import 'package:empire/feature/category/data/repository/categoryimage.dart';
 import 'package:empire/feature/category/domain/repositories/categoryimage_repository.dart';
 import 'package:empire/feature/category/domain/usecase/categories/category_image_camera.dart';
 import 'package:empire/feature/category/domain/usecase/categories/catgeroyimgae_gallery.dart';
+import 'package:empire/feature/dashboard/data/datasources/dashboard_remote_data_source.dart';
+import 'package:empire/feature/dashboard/data/repositories/dashboard_repository_impl.dart';
+import 'package:empire/feature/dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:empire/feature/dashboard/domain/usecases/get_climate_data.dart';
+import 'package:empire/feature/dashboard/domain/usecases/get_dashboard_stats.dart';
+import 'package:empire/feature/dashboard/domain/usecases/get_employees.dart';
+import 'package:empire/feature/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:empire/feature/homepage/data/datasource/metric_remotedatasource.dart';
 import 'package:empire/feature/homepage/data/repository/metric_repository_impl.dart';
 import 'package:empire/feature/homepage/domain/repository/metric_repository.dart';
@@ -22,7 +31,6 @@ import 'package:empire/feature/order/domain/usecase/order_usecase.dart';
 import 'package:empire/feature/order/domain/usecase/update_order_status_usecase.dart';
 import 'package:empire/feature/order/domain/usecase/wacthorder_usecase.dart';
 import 'package:empire/feature/order/presentation/Bloc/order_bloc.dart';
-
 import 'package:empire/feature/product/data/datasource/add_product_data_source_impl.dart';
 import 'package:empire/feature/auth/data/datasource/register.dart';
 import 'package:empire/feature/auth/data/repository/auth_repository..dart';
@@ -42,15 +50,13 @@ import 'package:empire/feature/category/domain/usecase/categories/adding_categor
 import 'package:empire/feature/category/domain/usecase/categories/adding_subcategory_usecase.dart';
 import 'package:empire/feature/category/domain/usecase/categories/get_category_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/login_usecase.dart';
- 
+
 import 'package:empire/feature/category/domain/usecase/categories/getting_subcategory_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_camera_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/pick_image_gallery_usecase.dart';
 import 'package:empire/feature/auth/domain/usecase/register_usecase.dart';
 
 import 'package:empire/feature/auth/domain/usecase/save_login_status_usecase.dart';
- 
- 
 
 import 'package:empire/feature/product/domain/usecase/add_product_usecae.dart';
 import 'package:empire/feature/product/domain/usecase/adding_brand_usecase.dart';
@@ -65,20 +71,49 @@ import 'package:empire/feature/revenue/presentation/bloc/revenue_bloc.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
- 
+
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
+  //////////////////dashboard
+  sl.registerFactory(
+    () => DashboardBloc(
+      getDashboardStats: sl(),
+      getEmployees: sl(),
+      getClimateData: sl(),
+      weatherService: sl(),
+    ),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => GetDashboardStats(sl()));
+  sl.registerLazySingleton(() => GetEmployees(sl()));
+  sl.registerLazySingleton(() => GetClimateData(sl()));
+
+  // Repository
+  sl.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(remoteDataSource: sl(), climateService: sl()),
+  );
+
+  // Data sources
+
+  sl.registerLazySingleton<DashboardRemoteDataSource>(
+    () => DashboardFirebaseDataSource(),
+  );
+
+  // Services
+  sl.registerLazySingleton(() => ClimateService());
+  sl.registerLazySingleton(() => WeatherService());
+
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
 
   sl.registerLazySingleton(() => FirebaseAuth.instance);
-  
- 
+
   sl.registerLazySingletonAsync(() => SharedPreferences.getInstance());
-  sl.registerLazySingleton(() => AuthRemoteDataSource( ));
+  sl.registerLazySingleton(() => AuthRemoteDataSource());
 
   sl.registerLazySingleton(() => AuthCheckingLoginStatus());
 
@@ -107,9 +142,6 @@ Future<void> init() async {
     () => RegisterRepositoryImpl(sl()),
   );
   sl.registerLazySingleton(() => CheckingUser(sl()));
- 
- 
-
 
   //login
   sl.registerLazySingleton(() => Login(sl()));
@@ -148,11 +180,13 @@ Future<void> init() async {
 
   sl.registerLazySingleton<ProductDataSource>(() => ProductDataSourceImpl());
 
-
   sl.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(sl<ProductDataSource>()),
   );
-  sl.registerLazySingleton<AddProductUseCase>(() => AddProductUseCase(sl<ProductRepository>()));
+  sl.registerLazySingleton<AddProductUseCase>(
+    () => AddProductUseCase(sl<ProductRepository>()),
+  );
+
   ///
 
   ///order

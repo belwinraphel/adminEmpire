@@ -85,7 +85,7 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
             children: [
               Text(
                 'Recent Orders',
-                style: AppTheme.lightTheme.textTheme.titleLarge?.copyWith(
+                style: AppTheme.darkTheme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -95,8 +95,8 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                 },
                 child: Text(
                   'View All',
-                  style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.lightTheme.colorScheme.primary,
+                  style: AppTheme.darkTheme.textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.darkTheme.colorScheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -145,7 +145,7 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                       Text(
                         order["customer"] as String,
                         style:
-                            AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                            AppTheme.darkTheme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                         maxLines: 1,
@@ -155,8 +155,8 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                       Text(
                         order["id"] as String,
                         style:
-                            AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondaryLight,
+                            AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                          color: AppTheme.darkTheme.textTheme.bodySmall?.color,
                         ),
                       ),
                     ],
@@ -167,16 +167,16 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                   children: [
                     Text(
                       order["amount"] as String,
-                      style: AppTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                      style: AppTheme.darkTheme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: AppTheme.lightTheme.colorScheme.primary,
+                        color: AppTheme.darkTheme.colorScheme.primary,
                       ),
                     ),
                     SizedBox(height: 0.5.h),
                     Text(
                       order["time"] as String,
-                      style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textSecondaryLight,
+                      style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                        color: AppTheme.darkTheme.textTheme.bodySmall?.color,
                       ),
                     ),
                   ],
@@ -191,14 +191,14 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                   children: [
                     CustomIconWidget(
                       iconName: 'shopping_bag',
-                      color: AppTheme.textSecondaryLight,
+                      color: AppTheme.darkTheme.textTheme.bodySmall?.color,
                       size: 16,
                     ),
                     SizedBox(width: 1.w),
                     Text(
                       '${order["items"]} items',
-                      style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textSecondaryLight,
+                      style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
+                        color: AppTheme.darkTheme.textTheme.bodySmall?.color,
                       ),
                     ),
                   ],
@@ -213,7 +213,7 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                   ),
                   child: Text(
                     order["status"] as String,
-                    style: AppTheme.lightTheme.textTheme.bodySmall?.copyWith(
+                    style: AppTheme.darkTheme.textTheme.bodySmall?.copyWith(
                       color: Color(order["statusColor"] as int),
                       fontWeight: FontWeight.w500,
                     ),
@@ -222,7 +222,7 @@ class _RecentOrdersListState extends State<RecentOrdersList> {
                 PopupMenuButton<String>(
                   icon: CustomIconWidget(
                     iconName: 'more_vert',
-                    color: AppTheme.textSecondaryLight,
+                    color: AppTheme.darkTheme.textTheme.bodySmall?.color,
                     size: 20,
                   ),
                   onSelected: (String value) {
